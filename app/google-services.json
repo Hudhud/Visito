@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "212295201337",
+    "firebase_url": "https://visito-4b840.firebaseio.com",
+    "project_id": "visito-4b840",
+    "storage_bucket": "visito-4b840.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:212295201337:android:763114c8557e5c37",
+        "android_client_info": {
+          "package_name": "dtu.app.visito"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "212295201337-2jfda6e4j23q24cfn1983ctgq7t07of6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "dtu.app.visito",
+            "certificate_hash": "772c4efc81030bc09a2131e5b47cf1c59f59a0d8"
+          }
+        },
+        {
+          "client_id": "212295201337-7icmprpkgor9a07frc0kohvtdepsn3mt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA4AoFYcH8useoR0_Rq4Aitirf86FJGd2s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "212295201337-7icmprpkgor9a07frc0kohvtdepsn3mt.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
