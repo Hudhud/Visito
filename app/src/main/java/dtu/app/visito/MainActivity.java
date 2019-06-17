@@ -50,6 +50,9 @@ public class MainActivity extends Activity {
                 startActivity(intent);
             }
         });
+
+        ShakeDetector sd = new ShakeDetector(getApplicationContext(), MainActivity.this);
+        sd.detectShake();
     }
 
 
