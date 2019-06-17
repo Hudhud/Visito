@@ -32,7 +32,7 @@ public class MainActivity extends Activity {
 
         topAttractionsBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                intent = new Intent(MainActivity.this, MainActivity.class);
+                intent = new Intent(MainActivity.this, AttractionsList.class);
                 startActivity(intent);
             }
         });
