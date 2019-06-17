@@ -16,6 +16,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -32,10 +33,10 @@ public class ShakeDetector {
     private SensorManager sensorManager;
     private float acelCurrentValue, acelLastValue, accelExGravity;
     private Activity act;
-    private int dialogCounter, databaseChildrenCounter, attractionLimit;
+    private int dialogCounter;
     private FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
     private DatabaseReference mDatabaseReference = mDatabase.getReference();;
-    private ArrayList<DataSnapshot> dataSnapshots = new ArrayList<>();
+    private boolean attractionExists;
 
     public ShakeDetector(Context mContext, Activity act) {
         this.mContext = mContext;
@@ -64,10 +65,6 @@ public class ShakeDetector {
             accelExGravity = accelExGravity * 0.9f + delta;
 
             if (accelExGravity > 20) {
-                /*intent = new Intent(act, MainActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                mContext.startActivity(intent);*/
-
               if (dialogCounter < 1){
                   dialogCounter++;
                   displayDialog();
@@ -82,6 +79,7 @@ public class ShakeDetector {
     };
 
     public void displayDialog(){
+        final GlobalData globalData = (GlobalData) mContext.getApplicationContext();
 
         LayoutInflater layoutInflater = LayoutInflater.from(act);
         final View dialog = layoutInflater.inflate(R.layout.input_dialog, null);
@@ -126,49 +124,29 @@ public class ShakeDetector {
                     errorText.setText("Incorrect latitude and/or longitude");
                 } else {
 
-                    mDatabaseReference.addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            if (dataSnapshot.exists()) {
-                                databaseChildrenCounter = (int) dataSnapshot.getChildrenCount();
-                            }
+                    Attraction attraction = new Attraction(attractionTitle.getText().toString(),
+                            attractionDescription.getText().toString(), attractionImageURL.getText().toString(),
+                            Float.valueOf(attractionLatitude.getText().toString()),
+                            Float.valueOf(attractionLongitude.getText().toString()));
 
-                            System.out.println("Key1 " + databaseChildrenCounter);
-
-                            Attraction attraction = new Attraction(attractionTitle.getText().toString(),
-                                    attractionDescription.getText().toString(), attractionImageURL.getText().toString(),
-                                    Float.valueOf(attractionLatitude.getText().toString()),
-                                    Float.valueOf(attractionLongitude.getText().toString()));
-
-
-                            for (DataSnapshot item : dataSnapshot.getChildren()) {
-
-                                if (item.child("title").getValue().toString().equals(attractionTitle.getText().toString())) {
-                                    errorText.setVisibility(View.VISIBLE);
-                                    errorText.setText("Attraction already exists");
-                                    System.out.println("DADADADA");
-                                } else if (!item.child("title").getValue().toString().equals(attractionTitle.getText().toString())){
-                                    mDatabaseReference.child(Integer.toString(databaseChildrenCounter+10)).setValue(attraction).
-                                            addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                @Override
-                                                public void onComplete(@NonNull Task<Void> task) {
-                                                    alert.dismiss();
-                                                    dialogCounter = 0;
-                                                }
-                                            });
-
-                                }
-
-                            }
-
+                    for (DataSnapshot item: globalData.getDsArrayList()) {
+                        if (item.getKey().equals(attractionTitle.getText().toString())) {
+                            attractionExists = true;
                         }
+                    }
 
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-
-                        }
-                    });
-
+                    if (attractionExists == false){
+                        mDatabaseReference.child(attractionTitle.getText().toString()).setValue(attraction).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                alert.dismiss();
+                                dialogCounter = 0;
+                            }
+                        });
+                    } else{
+                        errorText.setVisibility(View.VISIBLE);
+                        errorText.setText("Attraction already exists");
+                    }
                 }
             }
         });

@@ -16,7 +16,6 @@ public class MainActivity extends Activity {
     private Button topAttractionsBtn, weatherBtn, currencyBtn;
     private TextView title;
     private Intent intent;
-    private boolean hasShaken;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +53,6 @@ public class MainActivity extends Activity {
 
         ShakeDetector sd = new ShakeDetector(getApplicationContext(), MainActivity.this);
         sd.detectShake();
-
     }
 
 
