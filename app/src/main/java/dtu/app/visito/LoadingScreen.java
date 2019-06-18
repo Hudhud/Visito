@@ -7,17 +7,17 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.widget.TextView;
 
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.gson.Gson;
 
 public class LoadingScreen extends Activity {
-    private FirebaseDatabase mFirebaseDatabase;
-    private DatabaseReference mDatabase;
-    private TextView title, slogan, loadingText;
 
+    private TextView title, slogan, loadingText;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -37,14 +37,15 @@ public class LoadingScreen extends Activity {
         loadingText = findViewById(R.id.loadingText);
         loadingText.setTypeface(tf);
 
-        mFirebaseDatabase = FirebaseDatabase.getInstance();
-        mDatabase = mFirebaseDatabase.getReference();
-        mDatabase.addValueEventListener(new ValueEventListener() {
+        globalData.enableFirebaseOfflineCapabilities();
+
+        globalData.getmDatabase().addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange (DataSnapshot dataSnapshot){
                 for (DataSnapshot child: dataSnapshot.getChildren()) {
                     globalData.getDsArrayList().add(child);
                 }
+
             }
 
             @Override
