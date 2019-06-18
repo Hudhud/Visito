@@ -1,6 +1,7 @@
 package dtu.app.visito;
 
 import android.app.Activity;
+import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -13,73 +14,49 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
 import dtu.app.visito.R;
 
 
-public class AttractionsList extends Activity {
+public class AttractionsList extends AppCompatActivity {
 
-    private static final String TAG = "ViewDatabase";
-
-    //add Firebase Database
-    private FirebaseDatabase mFirebaseDatabase;
-    private DatabaseReference myRef;
-
-    ListView mListView;
-    ArrayList<String> lstAttractions;
-    ArrayList<String> lstImages;
+    private ListView mListView;
+    private ArrayList<DataSnapshot> lstAttractionInfo;
+    private ArrayList<String> lstAttractions = new ArrayList<>();
+    private ArrayList<String> lstAttractionIcons = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.attraction_list);
 
-        mListView=(ListView)findViewById(R.id.attraction_listview);
+        final GlobalData globalData = (GlobalData) getApplicationContext();
 
-        mFirebaseDatabase = FirebaseDatabase.getInstance();
-        myRef = mFirebaseDatabase.getReference();
+        lstAttractionInfo = globalData.getDsArrayList();
 
+        for (DataSnapshot i: lstAttractionInfo){
+            lstAttractions.add(i.child("title").getValue().toString());
+            lstAttractionIcons.add(i.child("img").getValue().toString());
+        }
 
-
-        myRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                showList(dataSnapshot);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
+        CustomListAdapter adapter=new CustomListAdapter(this, lstAttractions, lstAttractionIcons);
+        mListView=(ListView)findViewById(R.id.lvAttractionsList);
+        mListView.setAdapter(adapter);
 
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView parent, View v, int position, long id) {
 
-                Intent intent = new Intent(AttractionsList.this, AttractionsList.class);
-                startActivity(intent);
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+
+                //String Slecteditem = lstAttractions.indexOf(+position);
+                //Toast.makeText(getApplicationContext(), Slecteditem, Toast.LENGTH_SHORT).show();
+
             }
         });
 
-    }
-
-    private void showList(DataSnapshot dataSnapshot) {
-        lstAttractions = new ArrayList<>();
-        lstImages = new ArrayList<>();
-        for(DataSnapshot ds : dataSnapshot.getChildren()){
-            lstAttractions.add(ds.child("title").getValue().toString());
-            lstImages.add(ds.child("img").getValue().toString());
-        }
-        ArrayAdapter adapter = new ArrayAdapter(this,android.R.layout.simple_list_item_1,lstAttractions);
-
-        mListView.setAdapter(adapter);
     }
 
 

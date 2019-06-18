@@ -13,7 +13,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.gson.Gson;
+//import com.google.gson.Gson;
 
 public class LoadingScreen extends Activity {
 
@@ -60,7 +60,7 @@ public class LoadingScreen extends Activity {
             public void run() {
                 try {
                     super.run();
-                    sleep(10000);  //Delay of 10 seconds
+                    sleep(1000);  //Delay of 10 seconds
                     Intent i = new Intent(LoadingScreen.this, MainActivity.class);
                     startActivity(i);
                     finish();
