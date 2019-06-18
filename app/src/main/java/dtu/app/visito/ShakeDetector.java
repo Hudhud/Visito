@@ -31,7 +31,7 @@ public class ShakeDetector {
     private int dialogCounter;
     private FirebaseDatabase mFirebaseDatabase = FirebaseDatabase.getInstance();
     private DatabaseReference mDatabase = mFirebaseDatabase.getReference();
-    ;
+
     private boolean attractionExists;
 
     public ShakeDetector(Context mContext, Activity act) {
@@ -88,31 +88,83 @@ public class ShakeDetector {
             final GlobalData globalData = (GlobalData) mContext.getApplicationContext();
 
             LayoutInflater layoutInflater = LayoutInflater.from(act);
-            final View dialog = layoutInflater.inflate(R.layout.input_dialog, null);
-            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(act);
-            alertDialogBuilder.setView(dialog);
-
-            final EditText attractionTitle = dialog.findViewById(R.id.attractionTitle);
-            final EditText attractionImageURL = dialog.findViewById(R.id.attractionURL);
-            final EditText attractionDescription = dialog.findViewById(R.id.attractionDescription);
-
-            final EditText attractionLatitude = dialog.findViewById(R.id.attractionlattitude);
-            final EditText attractionLongitude = dialog.findViewById(R.id.attractionlongitude);
-
-            final TextView errorText = dialog.findViewById(R.id.error);
-            final Button okBtn = dialog.findViewById(R.id.okBtn);
-            final Button cancelBtn = dialog.findViewById(R.id.cancelBtn);
+            final View inputDialog = layoutInflater.inflate(R.layout.input_dialog, null);
+            final View loginDialog  = layoutInflater.inflate(R.layout.login_dialog, null);
 
 
-            final AlertDialog alert = alertDialogBuilder.create();
+            AlertDialog.Builder loginDialogBuilder = new AlertDialog.Builder(act);
+            loginDialogBuilder.setView(loginDialog);
+
+            AlertDialog.Builder inputDialogBuilder = new AlertDialog.Builder(act);
+            inputDialogBuilder.setView(inputDialog);
+
+
+
+            final EditText attractionTitle = inputDialog.findViewById(R.id.attractionTitle);
+            final EditText attractionImageURL = inputDialog.findViewById(R.id.attractionURL);
+            final EditText attractionDescription = inputDialog.findViewById(R.id.attractionDescription);
+
+            final EditText attractionLatitude = inputDialog.findViewById(R.id.attractionlattitude);
+            final EditText attractionLongitude = inputDialog.findViewById(R.id.attractionlongitude);
+
+            final TextView errorText = inputDialog.findViewById(R.id.error);
+            final Button okBtn = inputDialog.findViewById(R.id.okBtn);
+            final Button cancelBtn = inputDialog.findViewById(R.id.cancelBtn);
+
+            final EditText passwordField = loginDialog.findViewById(R.id.passwordField);
+            final TextView error = loginDialog.findViewById(R.id.error);
+
+
+            final Button loginBtn = loginDialog.findViewById(R.id.signin);
+            final Button cancelLoginBtn = loginDialog.findViewById(R.id.cancelBtnLogin);
+
+
+            final AlertDialog loginAlert = loginDialogBuilder.create();
+
+
+            final AlertDialog inputAlert = inputDialogBuilder.create();
+
+
+            cancelLoginBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    loginAlert.dismiss();
+                    dialogCounter = 0;
+                }
+            });
+
+            loginBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    if (passwordField.getText().toString().equals( "admin")){
+
+                        loginAlert.dismiss();
+                        dialogCounter = 0;
+
+                        inputAlert.show();
+
+                    } else {
+                        error.setVisibility(View.VISIBLE);
+                        error.setText("You are not the admin");
+
+                    }
+                }
+            });
+
+            loginAlert.show();
+
 
             cancelBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    alert.dismiss();
+                    inputAlert.dismiss();
                     dialogCounter = 0;
                 }
             });
+
+
+
 
             okBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -148,7 +200,7 @@ public class ShakeDetector {
                                 mDatabase.child(attractionTitle.getText().toString().trim()).setValue(attraction).addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void aVoid) {
-                                        alert.dismiss();
+                                        inputAlert.dismiss();
                                         dialogCounter = 0;
                                     }
                                 });
@@ -161,7 +213,6 @@ public class ShakeDetector {
                 }
             });
 
-            alert.show();
         }
     }
 }
