@@ -54,7 +54,6 @@ public class MapFragment extends Fragment {
         // Inflate the layout for this fragment
 
         final GlobalData globalData = (GlobalData) getActivity().getApplicationContext();
-        final ContentResolver contentResolver = getActivity().getContentResolver();
 
         requestPermission();
         locationProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());
