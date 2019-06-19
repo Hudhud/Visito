@@ -48,7 +48,7 @@
         android:layout_gravity="center_horizontal"/>
 
     <Button
-        android:id="@+id/btn2"
+        android:id="@+id/mapBTN"
         android:layout_width="300dp"
         android:layout_height="60dp"
         android:text="Map"
@@ -60,7 +60,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/container_frame_back"
+        android:id="@+id/mapFragment"
         android:layout_marginTop="5dp"
         android:orientation="horizontal">
 

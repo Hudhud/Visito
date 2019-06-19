@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
         topAttractionsBtn = findViewById(R.id.topAttractionsBtn);
         weatherBtn = findViewById(R.id.weatherBtn);
         currencyBtn = findViewById(R.id.currencyBtn);
-        btn2 = (Button) findViewById(R.id.btn2);
+        btn2 = findViewById(R.id.mapBTN);
 
         Typeface tf = Typeface.createFromAsset(getAssets(), "fonts/COMIC.TTF");
         title.setTypeface(tf);
@@ -68,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+
     public void addFragment(Fragment fragment, boolean addToBackStack, String tag) {
         FragmentManager manager =getSupportFragmentManager();
         FragmentTransaction ft = manager.beginTransaction();
@@ -75,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
         if (addToBackStack) {
             ft.addToBackStack(tag);
         }
-        ft.replace(R.id.container_frame_back, fragment, tag);
+        ft.replace(R.id.mapFragment, fragment, tag);
         ft.commitAllowingStateLoss();
     }
 }
