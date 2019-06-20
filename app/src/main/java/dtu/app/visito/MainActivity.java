@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
 
         currencyBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                intent = new Intent(MainActivity.this, MainActivity.class);
+                intent = new Intent(MainActivity.this, Currency.class);
                 startActivity(intent);
             }
         });
