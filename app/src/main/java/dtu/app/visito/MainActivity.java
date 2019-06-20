@@ -39,7 +39,7 @@ public class MainActivity extends Activity {
 
         weatherBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                intent = new Intent(MainActivity.this, MainActivity.class);
+                intent = new Intent(MainActivity.this, AttractionDescription.class);
                 startActivity(intent);
             }
         });
