@@ -67,14 +67,13 @@ public class MainActivity extends AppCompatActivity {
 
         currencyBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                intent = new Intent(MainActivity.this, MainActivity.class);
+                intent = new Intent(MainActivity.this, Currency.class);
                 startActivity(intent);
             }
         });
         btn2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final int status =(Integer) v.getTag();
                 if(!isMapOpen) {
                     addFragment(new MapFragment(), false, "one");
                     currencyBtn.setVisibility(View.GONE);
@@ -82,7 +81,6 @@ public class MainActivity extends AppCompatActivity {
                     topAttractionsBtn.setVisibility(View.GONE);
                     mapFragment.setVisibility(View.VISIBLE);
                     btn2.setText("Close map");
-                    v.setTag(0); //pause
                     isMapOpen=true;
                 } else {
                     currencyBtn.setVisibility(View.VISIBLE);
@@ -90,11 +88,13 @@ public class MainActivity extends AppCompatActivity {
                     topAttractionsBtn.setVisibility(View.VISIBLE);
                     mapFragment.setVisibility(View.GONE);
                     btn2.setText("Show map");
-                    v.setTag(1); //pause
                     isMapOpen=false;
                 }
             }
         });
+
+        ShakeDetector sd = new ShakeDetector(getApplicationContext(), MainActivity.this);
+        sd.detectShake();
     }
 
     public void addFragment(Fragment fragment, boolean addToBackStack, String tag) {
