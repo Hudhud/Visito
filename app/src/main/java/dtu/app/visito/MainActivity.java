@@ -18,6 +18,23 @@ public class MainActivity extends AppCompatActivity {
     private TextView title;
     private Intent intent;
     private LinearLayout mapFragment;
+
+    private Boolean isMapOpen = false;
+
+    @Override
+    public void onBackPressed() {
+        if (isMapOpen){
+            currencyBtn.setVisibility(View.VISIBLE);
+            weatherBtn.setVisibility(View.VISIBLE);
+            topAttractionsBtn.setVisibility(View.VISIBLE);
+            mapFragment.setVisibility(View.GONE);
+            btn2.setText("Show map");
+            isMapOpen=false;
+            return;
+        }
+        super.onBackPressed();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
 
         weatherBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                intent = new Intent(MainActivity.this, MainActivity.class);
+                intent = new Intent(MainActivity.this, Weather.class);
                 startActivity(intent);
             }
         });
@@ -58,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 final int status =(Integer) v.getTag();
-                if(status == 1) {
+                if(!isMapOpen) {
                     addFragment(new MapFragment(), false, "one");
                     currencyBtn.setVisibility(View.GONE);
                     weatherBtn.setVisibility(View.GONE);
@@ -66,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
                     mapFragment.setVisibility(View.VISIBLE);
                     btn2.setText("Close map");
                     v.setTag(0); //pause
+                    isMapOpen=true;
                 } else {
                     currencyBtn.setVisibility(View.VISIBLE);
                     weatherBtn.setVisibility(View.VISIBLE);
@@ -73,6 +91,7 @@ public class MainActivity extends AppCompatActivity {
                     mapFragment.setVisibility(View.GONE);
                     btn2.setText("Show map");
                     v.setTag(1); //pause
+                    isMapOpen=false;
                 }
             }
         });
@@ -82,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
         FragmentManager manager =getSupportFragmentManager();
         FragmentTransaction ft = manager.beginTransaction();
 
-        if (true) {
+        if (addToBackStack) {
             ft.addToBackStack(tag);
         }
         ft.replace(R.id.mapFragment, fragment, tag);

@@ -116,11 +116,11 @@ public class MapFragment extends Fragment {
     private void animateMapCamera(double lat, double long1, GoogleMap gm){
         googlePlex = CameraPosition.builder()
                 .target(new LatLng(lat, long1))
-                .zoom(7)
+                .zoom(10)
                 .bearing(0)
                 .tilt(10)
                 .build();
-        gm.animateCamera(CameraUpdateFactory.newCameraPosition(googlePlex), 10000, null);
+        gm.animateCamera(CameraUpdateFactory.newCameraPosition(googlePlex), 3000, null);
     }
 
     public void isLocationServiceEnabled(){

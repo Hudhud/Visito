@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.google.firebase.database.DataSnapshot;
 
+import org.w3c.dom.Attr;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
@@ -31,19 +32,19 @@ public class AttractionsList extends Activity {
     private TextView mTitle;
     private TextView mAttractionDescription;
 
-
-
     private ArrayList<DataSnapshot> lstAttractionInfo;
     private ArrayList<String> lstAttractionTitles = new ArrayList<>();
     private ArrayList<String> lstAttractionIcons = new ArrayList<>();
     private ArrayList<String> lstAttractionDescription = new ArrayList<>();
 
-    private ViewPager mViewPager;
+    private Boolean isDescriptionOpen = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.attraction_list);
+
+        System.out.println("Jeg siger: 3");
 
         mListView=(ListView)findViewById(R.id.lvAttractionsList);
         mAttractionDescriptionLayout = (LinearLayout) findViewById(R.id.description_layout);
@@ -61,6 +62,7 @@ public class AttractionsList extends Activity {
             lstAttractionDescription.add(i.child("body").getValue().toString());
         }
 
+
         final CustomListAdapter adapter=new CustomListAdapter(this, lstAttractionTitles, lstAttractionIcons);
         mListView.setAdapter(adapter);
 
@@ -74,6 +76,7 @@ public class AttractionsList extends Activity {
                 mAttractionDescription.setText(lstAttractionDescription.get(position));
                 adapter.loadImageFromURL(mImageAttraction, lstAttractionIcons.get(position));
                 mAttractionDescriptionLayout.setVisibility(View.VISIBLE);
+                isDescriptionOpen=true;
 
                 //String selectedItem = lstAttractionTitles.get(+position);
                 //Toast.makeText(getApplicationContext(), "Going to fragment for " + selectedItem, Toast.LENGTH_SHORT).show();
@@ -81,6 +84,17 @@ public class AttractionsList extends Activity {
             }
         });
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (isDescriptionOpen){
+            mListView.setVisibility(View.VISIBLE);
+            mAttractionDescriptionLayout.setVisibility(View.GONE);
+            isDescriptionOpen=false;
+            return;
+        }
+        super.onBackPressed();
     }
 
 }
