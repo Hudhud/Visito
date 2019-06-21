@@ -30,18 +30,19 @@ public class AttractionDescription extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.attract_description);
 
-        int index = 1;
+        int index = 4;
 
 
 
 
         final GlobalData globalData = (GlobalData) getApplicationContext();
 
-        //final TextView attractionTitle = (TextView) findViewById(R.id.attractionTitle);
-        //attractionTitle.setText(globalData.getDsArrayList().get(index).child("title").getValue().toString());
 
         final TextView attractionDescription = (TextView) findViewById(R.id.attractionDescription);
         attractionDescription.setText(globalData.getDsArrayList().get(index).child("body").getValue().toString());
+
+        final TextView attractionTitle = (TextView) findViewById(R.id.attractionTitle);
+        attractionTitle.setText(globalData.getDsArrayList().get(index).child("title").getValue().toString());
 
         final ImageView attractionImage = (ImageView) findViewById(R.id.imageAttraction);
         String imgURL = (globalData.getDsArrayList().get(index).child("img").getValue().toString());
