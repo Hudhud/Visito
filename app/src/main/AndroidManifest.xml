@@ -30,6 +30,7 @@
         </activity>
         <activity android:name=".MainActivity"/>
         <activity android:name=".AttractionsList"/>
+        <activity android:name=".Weather"/>
     </application>
     <uses-feature
         android:glEsVersion="0x00020000"
