@@ -126,11 +126,10 @@ public class Currency extends AppCompatActivity {
                 clearBTN.setOnClickListener(new View.OnClickListener() {
                     public void onClick(View v) {
                     amount.getText().clear();
+                        ResultDKK1.setText("DKK: \n" );
+                        ResultEUR1.setText("EUR: \n");
+                        ResultUSD1.setText("USD: \n" );
 
-
-                        ResultDKK1.setVisibility(View.GONE);
-                        ResultEUR1.setVisibility(View.GONE);
-                        ResultUSD1.setVisibility(View.GONE);
                     }
                 });
             }
