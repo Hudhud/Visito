@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/dialogTitle"
+        android:layout_width= "match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Please enter admin password"
+        android:background="#82b7e7"
+        android:textAlignment="center"
+        android:textColor="#ffffff"
+        android:textStyle="bold"
+        />
+
+    <TextView
+        android:id="@+id/error"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@android:color/holo_red_dark"
+        android:visibility="gone"
+        />
+
+    <EditText
+        android:id="@+id/passwordField"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter admin password"
+        android:padding="10dp"
+        android:layout_marginTop="10dp"
+        android:inputType="textPassword"
+        />
+
+
+
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/cancelBtnLogin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cancel"
+            android:layout_weight="1"/>
+
+        <Button
+            android:id="@+id/signin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sign in"
+            android:layout_weight="1"/>
+    </LinearLayout>
+
+</LinearLayout>

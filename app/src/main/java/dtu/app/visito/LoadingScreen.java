@@ -44,6 +44,10 @@ public class LoadingScreen extends Activity {
                 for (DataSnapshot child: dataSnapshot.getChildren()) {
                     globalData.getDsArrayList().add(child);
                 }
+                Intent i = new Intent(LoadingScreen.this, MainActivity.class);
+                startActivity(i);
+                finish();
+
 
             }
 
@@ -53,6 +57,7 @@ public class LoadingScreen extends Activity {
             }
         });
 
+        /*
         Thread welcomeThread = new Thread() {
 
             @Override
@@ -70,6 +75,8 @@ public class LoadingScreen extends Activity {
         };
 
         welcomeThread.start();
+
+        */
     }
 
 }
