@@ -5,6 +5,7 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -20,7 +21,9 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
@@ -30,6 +33,8 @@ public class MapFragment extends Fragment {
     private FusedLocationProviderClient locationProviderClient;
     private double currentLat, currentLong;
     private CameraPosition googlePlex;
+    private GlobalData globalData;
+    private SupportMapFragment mapFragment;
 
     public MapFragment() {
         // Required empty public constructor
@@ -38,79 +43,95 @@ public class MapFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+    }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+
+
+            case 1 : {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    showMap(mapFragment, globalData);
+                } else {
+                    showMap(mapFragment, globalData);
+                }
+                return;
+            }
+        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-        final GlobalData globalData = (GlobalData) getActivity().getApplicationContext();
-
         requestPermission();
         locationProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());
 
         View rootView = inflater.inflate(R.layout.fragment_map, container, false);
-        SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.frg);  //use SuppoprtMapFragment for using in fragment instead of activity  MapFragment = activity   SupportMapFragment = fragment
+        mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.frg);  //use SuppoprtMapFragment for using in fragment instead of activity  MapFragment = activity   SupportMapFragment = fragment
+        globalData = (GlobalData) getActivity().getApplicationContext();
 
 
-        mapFragment.getMapAsync(new OnMapReadyCallback() {
+        return rootView;
+    }
+
+    private void requestPermission(){
+            requestPermissions(new String[]{ACCESS_FINE_LOCATION}, 1);
+    }
+
+    private void showMap(SupportMapFragment map, final GlobalData gd){
+        map.getMapAsync(new OnMapReadyCallback() {
 
             @Override
             public void onMapReady(final GoogleMap mMap) {
                 mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 
-                mMap.clear(); //clear old markers
+                mMap.clear();
 
                 if (ActivityCompat.checkSelfPermission(getActivity(),
                         ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ) {
                     Toast.makeText(getActivity(), "Your current location won't be shown. Grant Location permission",
                             Toast.LENGTH_LONG).show();
-                }
-
-
-                mMap.setMyLocationEnabled(true);
-                isLocationServiceEnabled();
-
-                mMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener(){
-                    @Override
-                    public boolean onMyLocationButtonClick()
-                    {
-                        isLocationServiceEnabled();
-                        return false;
-                    }
-                });
-
-                locationProviderClient.getLastLocation().addOnSuccessListener(new OnSuccessListener<Location>() {
-                    @Override
-                    public void onSuccess(Location location) {
-                        if (location != null) {
-                            currentLat = location.getLatitude();
-                            currentLong = location.getLongitude();
-
-                            animateMapCamera(currentLat, currentLong, mMap);
-
-                        } else{
-                            animateMapCamera(55.676098, 12.568337, mMap);
+                    animateMapCamera(55.676098, 12.568337, mMap);
+                } else{
+                    mMap.setMyLocationEnabled(true);
+                    mMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
+                        @Override
+                        public boolean onMyLocationButtonClick() {
+                            isLocationServiceEnabled();
+                            return false;
                         }
-                    }
-                });
+                    });
 
-                for (DataSnapshot dataSnapShot: globalData.getDsArrayList()) {
-                    float lat =Float.valueOf(dataSnapShot.child("latitude").getValue().toString());
-                    float long1 = Float.valueOf(dataSnapShot.child("longitude").getValue().toString());
-                    String tit = dataSnapShot.getKey();
-                            mMap.addMarker(new MarkerOptions()
-                           .position(new LatLng(lat,long1))
-                           .title(tit));
+                    isLocationServiceEnabled();
+
+                    locationProviderClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Location> task) {
+                            Location location = null;
+                                location = task.getResult();
+                            if (location != null) {
+                                currentLat = location.getLatitude();
+                                currentLong = location.getLongitude();
+                                animateMapCamera(currentLat, currentLong, mMap);
+                            }
+                        }
+                    });
                 }
-            }
-        });
-        return rootView;
-    }
 
-    private void requestPermission(){
-        ActivityCompat.requestPermissions(getActivity(), new String[]{ACCESS_FINE_LOCATION}, 1);
+                    for (DataSnapshot dataSnapShot: gd.getDsArrayList()) {
+                        float lat =Float.valueOf(dataSnapShot.child("latitude").getValue().toString());
+                        float long1 = Float.valueOf(dataSnapShot.child("longitude").getValue().toString());
+                        String tit = dataSnapShot.getKey();
+                        mMap.addMarker(new MarkerOptions()
+                                .position(new LatLng(lat,long1))
+                                .title(tit));
+                    }
+                }
+
+        });
     }
 
     private void animateMapCamera(double lat, double long1, GoogleMap gm){
