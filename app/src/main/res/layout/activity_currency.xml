@@ -33,39 +33,33 @@
         android:layout_marginBottom="40dp"
         android:ems="10"
         android:layout_gravity="center_horizontal"
-        android:inputType="textPersonName"
         android:backgroundTint="@color/colorPrimary"
+        android:inputType="numberDecimal|numberSigned"
         android:hint="Enter amount" />
 
     <TextView
-        android:id="@+id/textView2"
-        android:layout_width="355dp"
-        android:layout_marginBottom="10dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_height="30dp"
-        android:layout_weight="0"
-        android:text="To " />
-
-    <Spinner
-        android:id="@+id/spinSearch2"
-        android:layout_width="355dp"
-        android:layout_height="68dp"
-        android:layout_marginBottom="20dp"
-        android:layout_gravity="center_horizontal"
-        android:ellipsize="marquee"
-        android:marqueeRepeatLimit="marquee_forever"
-        android:scrollHorizontally="true"
-        android:hint="Choose currency"
-        android:backgroundTint="@color/colorPrimary"
-        android:spinnerMode="dropdown" />
-
-    <TextView
-        android:id="@+id/result"
+        android:id="@+id/resultEUR"
         android:layout_width="300dp"
         android:layout_height="60dp"
         android:layout_gravity="center_horizontal"
         android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Result: XX" />
+      />
+
+
+    <TextView
+        android:id="@+id/resultUSD"
+        android:layout_width="300dp"
+        android:layout_height="60dp"
+        android:layout_gravity="center_horizontal"
+        android:ems="10"
+       />
+
+    <TextView
+        android:id="@+id/resultDKK"
+        android:layout_width="300dp"
+        android:layout_height="60dp"
+        android:layout_gravity="center_horizontal"
+        android:ems="10"
+         />
 
 </LinearLayout>
