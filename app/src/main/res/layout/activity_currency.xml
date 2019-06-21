@@ -35,8 +35,8 @@
         android:layout_marginBottom="40dp"
         android:backgroundTint="@color/colorPrimary"
         android:ems="10"
-        android:hint="Enter amount"
         android:digits="0123456789."
+        android:hint="Enter amount"
         android:inputType="numberDecimal|numberSigned" />
 
     <TextView
