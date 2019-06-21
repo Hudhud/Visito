@@ -6,36 +6,37 @@
 
     <TextView
         android:id="@+id/textView"
-        android:layout_width="355dp"
+        android:layout_width="303dp"
         android:layout_height="35dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="10dp"
         android:layout_weight="0"
-        android:text="Convert from " />
+        android:text="Convert from "
+        android:textSize="18sp" />
 
     <Spinner
         android:id="@+id/spinSearch"
-        android:layout_width="352dp"
+        android:layout_width="303dp"
         android:layout_height="70dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="20dp"
         android:layout_weight="0"
-        android:hint="Choose currency"
         android:backgroundTint="@color/colorPrimary"
+        android:hint="Choose currency"
         android:marqueeRepeatLimit="marquee_forever"
         android:scrollHorizontally="true"
         android:spinnerMode="dropdown" />
 
     <EditText
         android:id="@+id/edit"
-        android:layout_width="300dp"
-        android:layout_height="60dp"
-        android:layout_marginBottom="40dp"
-        android:ems="10"
+        android:layout_width="299dp"
+        android:layout_height="64dp"
         android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="40dp"
         android:backgroundTint="@color/colorPrimary"
-        android:inputType="numberDecimal|numberSigned"
-        android:hint="Enter amount" />
+        android:ems="10"
+        android:hint="Enter amount"
+        android:inputType="numberDecimal|numberSigned" />
 
     <TextView
         android:id="@+id/resultEUR"
@@ -61,5 +62,12 @@
         android:layout_gravity="center_horizontal"
         android:ems="10"
          />
-
+    <Button
+        android:id="@+id/clearBTN"
+        android:layout_width="300dp"
+        android:layout_height="60dp"
+        android:text="Clear"
+        android:backgroundTint="@color/colorPrimary"
+        android:textColor="@android:color/white"
+        android:layout_gravity="center_horizontal"/>
 </LinearLayout>
