@@ -5,10 +5,14 @@
 
     <TextView
         android:id="@+id/dialogTitle"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Fill out the fields to create a new attraction"
+        android:background="#82b7e7"
+        android:textAlignment="center"
+        android:textColor="#ffffff"
+        android:textStyle="bold"
         />
 
     <TextView

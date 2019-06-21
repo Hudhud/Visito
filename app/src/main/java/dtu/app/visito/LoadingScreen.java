@@ -13,7 +13,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-//import com.google.gson.Gson;
 
 public class LoadingScreen extends Activity {
 
@@ -45,6 +44,10 @@ public class LoadingScreen extends Activity {
                 for (DataSnapshot child: dataSnapshot.getChildren()) {
                     globalData.getDsArrayList().add(child);
                 }
+                Intent i = new Intent(LoadingScreen.this, MainActivity.class);
+                startActivity(i);
+                finish();
+
 
             }
 
@@ -54,13 +57,14 @@ public class LoadingScreen extends Activity {
             }
         });
 
+        /*
         Thread welcomeThread = new Thread() {
 
             @Override
             public void run() {
                 try {
                     super.run();
-                    sleep(1000);  //Delay of 10 seconds
+                    sleep(10000);  //Delay of 10 seconds
                     Intent i = new Intent(LoadingScreen.this, MainActivity.class);
                     startActivity(i);
                     finish();
@@ -71,6 +75,8 @@ public class LoadingScreen extends Activity {
         };
 
         welcomeThread.start();
+
+        */
     }
 
 }

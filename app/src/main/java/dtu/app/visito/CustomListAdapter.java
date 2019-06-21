@@ -51,7 +51,7 @@ public class CustomListAdapter extends ArrayAdapter<String> {
 
         txtTitle.setText(lstAttractions.get(position));
 
-        loadImageFromURL(imageView, "https://firebasestorage.googleapis.com/v0/b/visito-4b840.appspot.com/o/Amalienborg.jpg?alt=media&token=f58b2531-852c-4c39-8328-77fdaa0bf0d2");
+        loadImageFromURL(imageView, lstAttractionIcons.get(position));
 
         //imageView.setImageDrawable(null);
 
