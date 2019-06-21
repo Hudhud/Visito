@@ -1,86 +1,103 @@
 package dtu.app.visito;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.ScrollView;
+import android.widget.TextView;
 import android.widget.Toast;
-
 import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+
+import org.w3c.dom.Attr;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
-
 import dtu.app.visito.R;
 
 
 public class AttractionsList extends Activity {
 
-    private static final String TAG = "ViewDatabase";
+    private ListView mListView;
+    private LinearLayout mAttractionDescriptionLayout;
+    private ScrollView mScrollView;
+    private ImageView mImageAttraction;
+    private TextView mTitle;
+    private TextView mAttractionDescription;
 
-    //add Firebase Database
-    private FirebaseDatabase mFirebaseDatabase;
-    private DatabaseReference myRef;
+    private ArrayList<DataSnapshot> lstAttractionInfo;
+    private ArrayList<String> lstAttractionTitles = new ArrayList<>();
+    private ArrayList<String> lstAttractionIcons = new ArrayList<>();
+    private ArrayList<String> lstAttractionDescription = new ArrayList<>();
 
-    ListView mListView;
-    ArrayList<String> lstAttractions;
-    ArrayList<String> lstImages;
+    private Boolean isDescriptionOpen = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.attraction_list);
 
-        mListView=(ListView)findViewById(R.id.attraction_listview);
+        mListView=(ListView)findViewById(R.id.lvAttractionsList);
+        mAttractionDescriptionLayout = (LinearLayout) findViewById(R.id.description_layout);
+        mScrollView = (ScrollView) findViewById(R.id.scrollView);
+        mImageAttraction = (ImageView) findViewById(R.id.imageAttraction);
+        mTitle = (TextView) findViewById(R.id.title);
+        mAttractionDescription = (TextView) findViewById(R.id.attractionDescription);
 
-        mFirebaseDatabase = FirebaseDatabase.getInstance();
-        myRef = mFirebaseDatabase.getReference();
+        final GlobalData globalData = (GlobalData) getApplicationContext();
+
+        lstAttractionInfo = globalData.getDsArrayList();
+
+        for (DataSnapshot i: lstAttractionInfo){
+            lstAttractionTitles.add(i.child("title").getValue().toString());
+            lstAttractionIcons.add(i.child("img").getValue().toString());
+            lstAttractionDescription.add(i.child("body").getValue().toString());
+        }
 
 
-
-        myRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                showList(dataSnapshot);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
+        final CustomListAdapter adapter=new CustomListAdapter(this, lstAttractionTitles, lstAttractionIcons);
+        mListView.setAdapter(adapter);
 
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView parent, View v, int position, long id) {
 
-                Intent intent = new Intent(AttractionsList.this, AttractionsList.class);
-                startActivity(intent);
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+                mListView.setVisibility(View.GONE);
+                mTitle.setText(lstAttractionTitles.get(position));
+                mAttractionDescription.setText(lstAttractionDescription.get(position));
+                mScrollView.scrollTo(0,0);
+
+                adapter.loadImageFromURL(mImageAttraction, lstAttractionIcons.get(position));
+                mAttractionDescriptionLayout.setVisibility(View.VISIBLE);
+                isDescriptionOpen=true;
+
+                //String selectedItem = lstAttractionTitles.get(+position);
+                //Toast.makeText(getApplicationContext(), "Going to fragment for " + selectedItem, Toast.LENGTH_SHORT).show();
+
             }
         });
 
     }
 
-    private void showList(DataSnapshot dataSnapshot) {
-        lstAttractions = new ArrayList<>();
-        lstImages = new ArrayList<>();
-        for(DataSnapshot ds : dataSnapshot.getChildren()){
-            lstAttractions.add(ds.child("title").getValue().toString());
-            lstImages.add(ds.child("img").getValue().toString());
+    @Override
+    public void onBackPressed() {
+        if (isDescriptionOpen){
+            mListView.setVisibility(View.VISIBLE);
+            mAttractionDescriptionLayout.setVisibility(View.GONE);
+            isDescriptionOpen=false;
+            return;
         }
-        ArrayAdapter adapter = new ArrayAdapter(this,android.R.layout.simple_list_item_1,lstAttractions);
-
-        mListView.setAdapter(adapter);
+        super.onBackPressed();
     }
-
 
 }
