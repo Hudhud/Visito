@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.google.firebase.database.DataSnapshot;
@@ -28,6 +29,7 @@ public class AttractionsList extends Activity {
 
     private ListView mListView;
     private LinearLayout mAttractionDescriptionLayout;
+    private ScrollView mScrollView;
     private ImageView mImageAttraction;
     private TextView mTitle;
     private TextView mAttractionDescription;
@@ -44,10 +46,9 @@ public class AttractionsList extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.attraction_list);
 
-        System.out.println("Jeg siger: 3");
-
         mListView=(ListView)findViewById(R.id.lvAttractionsList);
         mAttractionDescriptionLayout = (LinearLayout) findViewById(R.id.description_layout);
+        mScrollView = (ScrollView) findViewById(R.id.scrollView);
         mImageAttraction = (ImageView) findViewById(R.id.imageAttraction);
         mTitle = (TextView) findViewById(R.id.title);
         mAttractionDescription = (TextView) findViewById(R.id.attractionDescription);
@@ -74,6 +75,8 @@ public class AttractionsList extends Activity {
                 mListView.setVisibility(View.GONE);
                 mTitle.setText(lstAttractionTitles.get(position));
                 mAttractionDescription.setText(lstAttractionDescription.get(position));
+                mScrollView.scrollTo(0,0);
+
                 adapter.loadImageFromURL(mImageAttraction, lstAttractionIcons.get(position));
                 mAttractionDescriptionLayout.setVisibility(View.VISIBLE);
                 isDescriptionOpen=true;

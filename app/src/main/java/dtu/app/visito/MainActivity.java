@@ -92,6 +92,9 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
+        ShakeDetector sd = new ShakeDetector(getApplicationContext(), MainActivity.this);
+        sd.detectShake();
     }
 
     public void addFragment(Fragment fragment, boolean addToBackStack, String tag) {

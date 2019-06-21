@@ -35,7 +35,6 @@
         <ImageView
             android:id="@+id/imageAttraction"
             android:layout_width="match_parent"
-            android:src="@mipmap/icon"
             android:layout_height="168dp"
             android:layout_gravity="center"
             android:layout_marginTop="50dp"
@@ -53,8 +52,9 @@
             android:textStyle="bold"/>
 
         <ScrollView
+            android:id="@+id/scrollView"
             android:layout_width="match_parent"
-            android:layout_height="349dp">
+            android:layout_height="325dp">
             <TextView
                 android:id="@+id/attractionDescription"
                 android:layout_width="match_parent"
@@ -66,6 +66,14 @@
                 android:layout_weight="0.34" />
 
         </ScrollView>
+
+        <ImageButton
+            android:id="@+id/imageButton2"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:layout_gravity="center"
+            android:scaleType="fitXY"
+            android:src="@mipmap/direction_icon" />
 
     </LinearLayout>
 </RelativeLayout>
