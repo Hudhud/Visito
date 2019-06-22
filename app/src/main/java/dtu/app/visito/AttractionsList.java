@@ -122,7 +122,6 @@ public class AttractionsList extends AppCompatActivity {
                 mapFragment.setVisibility(View.GONE);
                 mTitle.setText(lstAttractionTitles.get(position));
                 mAttractionDescription.setText(lstAttractionDescription.get(position));
-                mScrollView.scrollTo(0,0);
                 getSupportActionBar().hide();
 
                 mImageAttraction.setImageBitmap(null);
@@ -151,11 +150,14 @@ public class AttractionsList extends AppCompatActivity {
                             @Override
                             public void run() {
                                 mAttractionDescriptionLayout.setVisibility(View.VISIBLE);
+                                mScrollView.scrollTo(0,0);
                             }
                         });
                         isDescriptionOpen=true;
                     }
                 }, 3000);
+
+
 
 
             }
