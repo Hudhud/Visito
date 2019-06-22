@@ -2,6 +2,10 @@ package dtu.app.visito;
 
 import android.app.Application;
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.widget.Toast;
+
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -27,5 +31,20 @@ public class GlobalData extends Application {
 
     public DatabaseReference getmDatabase(){
         return mDatabase;
+    }
+
+    public boolean checkConnectivity(String errorMsg){
+
+        ConnectivityManager cm =
+                (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        final NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+
+        if (activeNetwork == null || activeNetwork.isConnected() == false || activeNetwork.isConnectedOrConnecting() == false) {
+            Toast.makeText(getApplicationContext(), errorMsg, Toast.LENGTH_LONG).show();
+            return false;
+        } else {
+            return true;
+        }
     }
 }

@@ -11,6 +11,7 @@
         android:layout_gravity="center_horizontal"
         android:backgroundTint="@color/colorPrimary"
         android:text="Map"
+        android:layout_marginTop="10dp"
         android:textColor="@android:color/white" />
 
     <ListView
@@ -31,7 +32,8 @@
         <TextView
             android:id="@+id/title"
             android:layout_width="match_parent"
-            android:layout_height="55dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
             android:text="Title"
             android:layout_alignParentStart="true"
             android:layout_centerInParent="true"
@@ -43,26 +45,27 @@
         <ImageView
             android:id="@+id/imageAttraction"
             android:layout_width="match_parent"
-            android:layout_height="168dp"
+            android:layout_height="186dp"
             android:layout_gravity="center"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="20dp"
             android:layout_weight="0.10"
             android:scaleType="fitXY"
             />
 
-        <TextView
+        <Button
+            android:id="@+id/direction"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:textColor="@android:color/black"
-            android:textSize="30sp"
-            android:autoSizeTextType="uniform"
-            android:textStyle="bold"/>
+            android:layout_height="50dp"
+            android:text="Get direction"
+            android:backgroundTint="@color/colorPrimary"
+            android:textColor="@android:color/white"
+            android:layout_gravity="center_horizontal"/>
 
         <ScrollView
             android:id="@+id/scrollView"
             android:layout_width="match_parent"
             android:layout_height="325dp">
+
             <TextView
                 android:id="@+id/attractionDescription"
                 android:layout_width="match_parent"
@@ -74,14 +77,6 @@
                 android:layout_weight="0.34" />
 
         </ScrollView>
-
-        <ImageButton
-            android:id="@+id/imageButton2"
-            android:layout_width="55dp"
-            android:layout_height="55dp"
-            android:layout_gravity="center"
-            android:scaleType="fitXY"
-            android:src="@mipmap/direction_icon" />
 
     </LinearLayout>
 

@@ -20,11 +20,11 @@ public class Currency extends AppCompatActivity {
     private EditText amount;
     private Spinner spinner1;
     private TextView ResultEUR1, ResultUSD1, ResultDKK1;
-    private Button clearBTN;
 
     String[] currencies = {"DKK","USD","EURO", "Select a currency"};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        getSupportActionBar().setTitle("Currency Converter");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_currency);
 
@@ -35,7 +35,6 @@ public class Currency extends AppCompatActivity {
         ResultEUR1 = findViewById(R.id.resultEUR);
         ResultUSD1 =findViewById(R.id.resultUSD);
         ResultDKK1 =findViewById(R.id.resultDKK);
-        clearBTN =findViewById(R.id.clearBTN);
 
         ArrayAdapter adapter = new ArrayAdapter(Currency.this, android.R.layout.simple_list_item_1){
             @Override
@@ -54,10 +53,15 @@ public class Currency extends AppCompatActivity {
         spinner1.setSelection(adapter.getCount());
 
 
+
         spinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
             @Override
             public void onItemSelected(AdapterView<?> parent, View view,int position, long id) {
+                amount.getText().clear();
+                ResultDKK1.setText("DKK: \n" );
+                ResultEUR1.setText("EUR: \n");
+                ResultUSD1.setText("USD: \n" );
                 amount.addTextChangedListener(new TextWatcher() {
 
                     public void afterTextChanged(Editable s) {
@@ -123,15 +127,7 @@ public class Currency extends AppCompatActivity {
 
                     }
                 });
-                clearBTN.setOnClickListener(new View.OnClickListener() {
-                    public void onClick(View v) {
-                    amount.getText().clear();
-                        ResultDKK1.setText("DKK: \n" );
-                        ResultEUR1.setText("EUR: \n");
-                        ResultUSD1.setText("USD: \n" );
 
-                    }
-                });
             }
 
             @Override

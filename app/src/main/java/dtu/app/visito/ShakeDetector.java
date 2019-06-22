@@ -31,12 +31,15 @@ public class ShakeDetector {
     private int dialogCounter;
     private FirebaseDatabase mFirebaseDatabase = FirebaseDatabase.getInstance();
     private DatabaseReference mDatabase = mFirebaseDatabase.getReference();
+    private GlobalData globalData;
+
 
     private boolean attractionExists;
 
     public ShakeDetector(Context mContext, Activity act) {
         this.mContext = mContext;
         this.act = act;
+        this.globalData = (GlobalData) act.getApplicationContext();
     }
 
     public void detectShake() {
@@ -76,14 +79,7 @@ public class ShakeDetector {
 
     public void displayDialog() {
 
-        ConnectivityManager cm =
-                (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
-
-        final NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-
-        if (activeNetwork == null || activeNetwork.isConnected() == false || activeNetwork.isConnectedOrConnecting() == false) {
-            Toast.makeText(mContext, "You cannot create a new attraction without an internet connection", Toast.LENGTH_LONG).show();
-        } else {
+        if (globalData.checkConnectivity("You cannot create a new attraction without an internet connection")){
 
             final GlobalData globalData = (GlobalData) mContext.getApplicationContext();
 
@@ -171,9 +167,7 @@ public class ShakeDetector {
             okBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (activeNetwork == null || activeNetwork.isConnected() == false || activeNetwork.isConnectedOrConnecting() == false) {
-                        Toast.makeText(mContext, "You cannot create a new attraction without an internet connection", Toast.LENGTH_SHORT).show();
-                    } else {
+                   if (globalData.checkConnectivity("You cannot create a new attraction without an internet connection")){
                         if (attractionTitle.getText().length() < 1 ||
                                 attractionImageURL.getText().length() < 1 ||
                                 attractionDescription.getText().length() < 1 ||

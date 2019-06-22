@@ -1,6 +1,8 @@
 package dtu.app.visito;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -46,24 +48,16 @@ public class AttractionsList extends AppCompatActivity {
     private ArrayList<String> lstAttractionTitles = new ArrayList<>();
     private ArrayList<String> lstAttractionIcons = new ArrayList<>();
     private ArrayList<String> lstAttractionDescription = new ArrayList<>();
-    private Button map;
+    private ArrayList<Float> lstAttractionLat = new ArrayList<>();
+    private ArrayList<Float> lstAttractionLong = new ArrayList<>();
+
+    private Button map,mapDirection;
     private LinearLayout mapFragment;
 
 
     private Boolean isDescriptionOpen = false;
     private Boolean isMapOpen = false;
-/*
-    @Override
-    public void onBackPressed() {
-        if (isMapOpen){
-            mListView.setVisibility(View.VISIBLE);
-            mapFragment.setVisibility(View.GONE);
-            map.setText("Show map");
-            isMapOpen=false;
-            return;
-        }
-        super.onBackPressed();
-    }*/
+
 
 
     @Override
@@ -73,6 +67,7 @@ public class AttractionsList extends AppCompatActivity {
             mAttractionDescriptionLayout.setVisibility(View.GONE);
             isDescriptionOpen=false;
             mapFragment.setVisibility(View.VISIBLE);
+            getSupportActionBar().show();
             map.setVisibility(View.VISIBLE);
             return;
         }
@@ -83,7 +78,7 @@ public class AttractionsList extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.attraction_list);
-
+        getSupportActionBar().setTitle("Top attractions");
         mListView=(ListView)findViewById(R.id.lvAttractionsList);
         mAttractionDescriptionLayout = (LinearLayout) findViewById(R.id.description_layout);
         mScrollView = (ScrollView) findViewById(R.id.scrollView);
@@ -91,6 +86,7 @@ public class AttractionsList extends AppCompatActivity {
         mTitle = (TextView) findViewById(R.id.title);
         mAttractionDescription = (TextView) findViewById(R.id.attractionDescription);
         map = findViewById(R.id.mapBTN);
+        mapDirection =  findViewById(R.id.direction);
         mapFragment = findViewById(R.id.mapFragment);
         map.setTag(1);
         map.setText("Show map");
@@ -102,6 +98,9 @@ public class AttractionsList extends AppCompatActivity {
             lstAttractionTitles.add(i.child("title").getValue().toString());
             lstAttractionIcons.add(i.child("img").getValue().toString());
             lstAttractionDescription.add(i.child("body").getValue().toString());
+            lstAttractionLat.add(Float.valueOf(i.child("latitude").getValue().toString()));
+            lstAttractionLong.add(Float.valueOf(i.child("longitude").getValue().toString()));
+
         }
 
 
@@ -112,15 +111,28 @@ public class AttractionsList extends AppCompatActivity {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
+                                    final int position, long id) {
+
+                globalData.checkConnectivity("You cannot view the images of the attractions without" +
+                        "an internet connection");
                 mListView.setVisibility(View.GONE);
                 map.setVisibility(View.GONE);
                 mapFragment.setVisibility(View.GONE);
                 mTitle.setText(lstAttractionTitles.get(position));
                 mAttractionDescription.setText(lstAttractionDescription.get(position));
                 mScrollView.scrollTo(0,0);
+                getSupportActionBar().hide();
+
 
                 adapter.loadImageFromURL(mImageAttraction, lstAttractionIcons.get(position));
+                mapDirection.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        showDirection(lstAttractionLat.get(position), lstAttractionLong.get(position));
+                    }
+                });
+
+
                 mAttractionDescriptionLayout.setVisibility(View.VISIBLE);
                 isDescriptionOpen=true;
 
@@ -133,16 +145,20 @@ public class AttractionsList extends AppCompatActivity {
                     addFragment(new MapFragment(), false, "one");
                     mListView.setVisibility(View.GONE);
                     mapFragment.setVisibility(View.VISIBLE);
+                    getSupportActionBar().hide();
                     map.setText("Close map");
                     isMapOpen=true;
                 } else {
                     mListView.setVisibility(View.VISIBLE);
                     mapFragment.setVisibility(View.GONE);
                     map.setText("Show map");
+                    getSupportActionBar().show();
                     isMapOpen=false;
                 }
             }
         });
+
+
 
     }
 
@@ -157,6 +173,12 @@ public class AttractionsList extends AppCompatActivity {
         }
         ft.replace(R.id.mapFragment, fragment, tag);
         ft.commitAllowingStateLoss();
+    }
+
+    public void showDirection (float latitude, float longitude){
+        Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
+                Uri.parse("http://maps.google.com/maps?daddr="+latitude+","+longitude));
+        startActivity(intent);
     }
 
 }
