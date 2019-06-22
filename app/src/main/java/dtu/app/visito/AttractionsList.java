@@ -76,6 +76,7 @@ public class AttractionsList extends AppCompatActivity {
             map.setText("Show map");
             getSupportActionBar().show();
             isMapOpen=false;
+            return;
         }
         super.onBackPressed();
     }
@@ -84,6 +85,7 @@ public class AttractionsList extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.attraction_list);
+
         getSupportActionBar().setTitle("Top attractions");
         mListView=(ListView)findViewById(R.id.lvAttractionsList);
         mAttractionDescriptionLayout = (LinearLayout) findViewById(R.id.description_layout);

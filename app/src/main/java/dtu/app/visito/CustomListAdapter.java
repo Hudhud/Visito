@@ -53,8 +53,6 @@ public class CustomListAdapter extends ArrayAdapter<String> {
 
         loadImageFromURL(imageView, lstAttractionIcons.get(position));
 
-        //imageView.setImageDrawable(null);
-
         return rowView;
     }
 
