@@ -1,22 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+    android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:weightSum="100">
+    android:gravity="center_vertical">
 
-    <TextView
-        android:id="@+id/tvTopAttractions"
+    <Button
+        android:id="@+id/mapBTN"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Top Attractions"
-        android:textAlignment="center"
-        android:textSize="25sp" />
+        android:layout_gravity="center_horizontal"
+        android:backgroundTint="@color/colorPrimary"
+        android:text="Map"
+        android:textColor="@android:color/white" />
 
     <ListView
+
+
+        android:id="@+id/lvAttractionsList"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/attraction_listview"
-        />
+        android:layout_height="match_parent" />
+
+    <LinearLayout
+        android:id="@+id/description_layout"
+        android:visibility="gone"
+        android:orientation="vertical" android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:weightSum="10">
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:text="Title"
+            android:layout_alignParentStart="true"
+            android:layout_centerInParent="true"
+            android:textSize="35dp"
+            android:textColor="@android:color/black"
+            android:textAlignment="center"
+            android:textStyle="bold"/>
+
+        <ImageView
+            android:id="@+id/imageAttraction"
+            android:layout_width="match_parent"
+            android:layout_height="168dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="50dp"
+            android:layout_weight="0.10"
+            android:scaleType="fitXY"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:textColor="@android:color/black"
+            android:textSize="30sp"
+            android:autoSizeTextType="uniform"
+            android:textStyle="bold"/>
+
+        <ScrollView
+            android:id="@+id/scrollView"
+            android:layout_width="match_parent"
+            android:layout_height="325dp">
+            <TextView
+                android:id="@+id/attractionDescription"
+                android:layout_width="match_parent"
+                android:layout_height="296dp"
+                android:text="Description"
+                android:textAlignment="center"
+                android:textColor="@android:color/black"
+                android:textSize="25dp"
+                android:layout_weight="0.34" />
+
+        </ScrollView>
+
+        <ImageButton
+            android:id="@+id/imageButton2"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:layout_gravity="center"
+            android:scaleType="fitXY"
+            android:src="@mipmap/direction_icon" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/mapFragment"
+        android:layout_marginTop="5dp"
+        android:orientation="horizontal">
+    </LinearLayout>
 
 </LinearLayout>
