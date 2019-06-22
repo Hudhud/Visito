@@ -9,6 +9,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -17,6 +18,13 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.google.firebase.database.DataSnapshot;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.widget.LinearLayout;
+
+
 
 import org.w3c.dom.Attr;
 import org.w3c.dom.Text;
@@ -25,7 +33,7 @@ import java.util.ArrayList;
 import dtu.app.visito.R;
 
 
-public class AttractionsList extends Activity {
+public class AttractionsList extends AppCompatActivity {
 
     private ListView mListView;
     private LinearLayout mAttractionDescriptionLayout;
@@ -38,8 +46,38 @@ public class AttractionsList extends Activity {
     private ArrayList<String> lstAttractionTitles = new ArrayList<>();
     private ArrayList<String> lstAttractionIcons = new ArrayList<>();
     private ArrayList<String> lstAttractionDescription = new ArrayList<>();
+    private Button map;
+    private LinearLayout mapFragment;
+
 
     private Boolean isDescriptionOpen = false;
+    private Boolean isMapOpen = false;
+/*
+    @Override
+    public void onBackPressed() {
+        if (isMapOpen){
+            mListView.setVisibility(View.VISIBLE);
+            mapFragment.setVisibility(View.GONE);
+            map.setText("Show map");
+            isMapOpen=false;
+            return;
+        }
+        super.onBackPressed();
+    }*/
+
+
+    @Override
+    public void onBackPressed() {
+        if (isDescriptionOpen){
+            mListView.setVisibility(View.VISIBLE);
+            mAttractionDescriptionLayout.setVisibility(View.GONE);
+            isDescriptionOpen=false;
+            mapFragment.setVisibility(View.VISIBLE);
+            map.setVisibility(View.VISIBLE);
+            return;
+        }
+        super.onBackPressed();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +90,10 @@ public class AttractionsList extends Activity {
         mImageAttraction = (ImageView) findViewById(R.id.imageAttraction);
         mTitle = (TextView) findViewById(R.id.title);
         mAttractionDescription = (TextView) findViewById(R.id.attractionDescription);
-
+        map = findViewById(R.id.mapBTN);
+        mapFragment = findViewById(R.id.mapFragment);
+        map.setTag(1);
+        map.setText("Show map");
         final GlobalData globalData = (GlobalData) getApplicationContext();
 
         lstAttractionInfo = globalData.getDsArrayList();
@@ -73,6 +114,8 @@ public class AttractionsList extends Activity {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
                 mListView.setVisibility(View.GONE);
+                map.setVisibility(View.GONE);
+                mapFragment.setVisibility(View.GONE);
                 mTitle.setText(lstAttractionTitles.get(position));
                 mAttractionDescription.setText(lstAttractionDescription.get(position));
                 mScrollView.scrollTo(0,0);
@@ -81,23 +124,39 @@ public class AttractionsList extends Activity {
                 mAttractionDescriptionLayout.setVisibility(View.VISIBLE);
                 isDescriptionOpen=true;
 
-                //String selectedItem = lstAttractionTitles.get(+position);
-                //Toast.makeText(getApplicationContext(), "Going to fragment for " + selectedItem, Toast.LENGTH_SHORT).show();
-
+            }
+        });
+        map.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!isMapOpen) {
+                    addFragment(new MapFragment(), false, "one");
+                    mListView.setVisibility(View.GONE);
+                    mapFragment.setVisibility(View.VISIBLE);
+                    map.setText("Close map");
+                    isMapOpen=true;
+                } else {
+                    mListView.setVisibility(View.VISIBLE);
+                    mapFragment.setVisibility(View.GONE);
+                    map.setText("Show map");
+                    isMapOpen=false;
+                }
             }
         });
 
     }
 
-    @Override
-    public void onBackPressed() {
-        if (isDescriptionOpen){
-            mListView.setVisibility(View.VISIBLE);
-            mAttractionDescriptionLayout.setVisibility(View.GONE);
-            isDescriptionOpen=false;
-            return;
+
+
+    public void addFragment(Fragment fragment, boolean addToBackStack, String tag) {
+        FragmentManager manager = getSupportFragmentManager();
+        FragmentTransaction ft = manager.beginTransaction();
+
+        if (addToBackStack) {
+            ft.addToBackStack(tag);
         }
-        super.onBackPressed();
+        ft.replace(R.id.mapFragment, fragment, tag);
+        ft.commitAllowingStateLoss();
     }
 
 }

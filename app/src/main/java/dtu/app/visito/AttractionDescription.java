@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -48,8 +49,10 @@ public class AttractionDescription extends Activity {
         String imgURL = (globalData.getDsArrayList().get(index).child("img").getValue().toString());
         loadImageFromURL(attractionImage,imgURL);
 
+        final Button button = (Button) findViewById(R.id.map);
 
-        // (globalData.getDsArrayList().get(2).child("img").getValue())
+
+
 
     }
 

@@ -1,16 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="dtu.app.visito.AttractionsList"
-    >
+    android:gravity="center_vertical">
+
+    <Button
+        android:id="@+id/mapBTN"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:backgroundTint="@color/colorPrimary"
+        android:text="Map"
+        android:textColor="@android:color/white" />
 
     <ListView
+
+
         android:id="@+id/lvAttractionsList"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        />
+        android:layout_height="match_parent" />
 
     <LinearLayout
         android:id="@+id/description_layout"
@@ -76,4 +84,14 @@
             android:src="@mipmap/direction_icon" />
 
     </LinearLayout>
-</RelativeLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/mapFragment"
+        android:layout_marginTop="5dp"
+        android:orientation="horizontal">
+    </LinearLayout>
+
+</LinearLayout>
