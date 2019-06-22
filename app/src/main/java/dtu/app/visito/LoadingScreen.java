@@ -6,12 +6,8 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.widget.TextView;
-
-import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 public class LoadingScreen extends Activity {
@@ -23,7 +19,7 @@ public class LoadingScreen extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.loading_screen);
 
-        final GlobalData globalData = (GlobalData) getApplicationContext();
+        final GlobalClass globalClass = (GlobalClass) getApplicationContext();
 
         Typeface tf = Typeface.createFromAsset(getAssets(), "fonts/COMIC.TTF");
 
@@ -36,13 +32,13 @@ public class LoadingScreen extends Activity {
         loadingText = findViewById(R.id.loadingText);
         loadingText.setTypeface(tf);
 
-        globalData.enableFirebaseOfflineCapabilities();
+        globalClass.enableFirebaseOfflineCapabilities();
 
-        globalData.getmDatabase().addValueEventListener(new ValueEventListener() {
+        globalClass.getmDatabase().addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange (DataSnapshot dataSnapshot){
                 for (DataSnapshot child: dataSnapshot.getChildren()) {
-                    globalData.getDsArrayList().add(child);
+                    globalClass.getDsArrayList().add(child);
                 }
                 Intent i = new Intent(LoadingScreen.this, MainActivity.class);
                 startActivity(i);

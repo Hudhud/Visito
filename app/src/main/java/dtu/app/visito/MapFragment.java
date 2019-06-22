@@ -22,7 +22,6 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 
@@ -33,7 +32,7 @@ public class MapFragment extends Fragment {
     private FusedLocationProviderClient locationProviderClient;
     private double currentLat, currentLong;
     private CameraPosition googlePlex;
-    private GlobalData globalData;
+    private GlobalClass globalClass;
     private SupportMapFragment mapFragment;
 
     public MapFragment() {
@@ -54,9 +53,9 @@ public class MapFragment extends Fragment {
             case 1 : {
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    showMap(mapFragment, globalData);
+                    showMap(mapFragment, globalClass);
                 } else {
-                    showMap(mapFragment, globalData);
+                    showMap(mapFragment, globalClass);
                 }
                 return;
             }
@@ -71,7 +70,7 @@ public class MapFragment extends Fragment {
 
         View rootView = inflater.inflate(R.layout.fragment_map, container, false);
         mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.frg);  //use SuppoprtMapFragment for using in fragment instead of activity  MapFragment = activity   SupportMapFragment = fragment
-        globalData = (GlobalData) getActivity().getApplicationContext();
+        globalClass = (GlobalClass) getActivity().getApplicationContext();
 
 
         return rootView;
@@ -81,7 +80,7 @@ public class MapFragment extends Fragment {
             requestPermissions(new String[]{ACCESS_FINE_LOCATION}, 1);
     }
 
-    private void showMap(SupportMapFragment map, final GlobalData gd){
+    private void showMap(SupportMapFragment map, final GlobalClass gd){
         map.getMapAsync(new OnMapReadyCallback() {
 
             @Override

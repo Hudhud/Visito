@@ -5,16 +5,17 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.widget.Toast;
-
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
-public class GlobalData extends Application {
+public class GlobalClass extends Application {
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference mDatabase;
+
+    private boolean showLoading;
 
     private ArrayList<DataSnapshot> dsArrayList = new ArrayList<>();
 
@@ -47,4 +48,13 @@ public class GlobalData extends Application {
             return true;
         }
     }
+
+    public void showLoadingDialog(){
+        showLoading = true;
+    }
+
+    public boolean isShowLoading() {
+        return showLoading;
+    }
+
 }

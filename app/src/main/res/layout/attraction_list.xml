@@ -53,7 +53,7 @@
             />
 
         <Button
-            android:id="@+id/direction"
+            android:id="@+id/directionBtn"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:text="Get direction"

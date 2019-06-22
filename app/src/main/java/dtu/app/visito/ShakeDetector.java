@@ -7,15 +7,11 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
@@ -31,7 +27,7 @@ public class ShakeDetector {
     private int dialogCounter;
     private FirebaseDatabase mFirebaseDatabase = FirebaseDatabase.getInstance();
     private DatabaseReference mDatabase = mFirebaseDatabase.getReference();
-    private GlobalData globalData;
+    private GlobalClass globalClass;
 
 
     private boolean attractionExists;
@@ -39,7 +35,7 @@ public class ShakeDetector {
     public ShakeDetector(Context mContext, Activity act) {
         this.mContext = mContext;
         this.act = act;
-        this.globalData = (GlobalData) act.getApplicationContext();
+        this.globalClass = (GlobalClass) act.getApplicationContext();
     }
 
     public void detectShake() {
@@ -79,9 +75,9 @@ public class ShakeDetector {
 
     public void displayDialog() {
 
-        if (globalData.checkConnectivity("You cannot create a new attraction without an internet connection")){
+        if (globalClass.checkConnectivity("You cannot create a new attraction without an internet connection")){
 
-            final GlobalData globalData = (GlobalData) mContext.getApplicationContext();
+            final GlobalClass globalClass = (GlobalClass) mContext.getApplicationContext();
 
             LayoutInflater layoutInflater = LayoutInflater.from(act);
             final View inputDialog = layoutInflater.inflate(R.layout.input_dialog, null);
@@ -167,7 +163,7 @@ public class ShakeDetector {
             okBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                   if (globalData.checkConnectivity("You cannot create a new attraction without an internet connection")){
+                   if (globalClass.checkConnectivity("You cannot create a new attraction without an internet connection")){
                         if (attractionTitle.getText().length() < 1 ||
                                 attractionImageURL.getText().length() < 1 ||
                                 attractionDescription.getText().length() < 1 ||
@@ -186,7 +182,7 @@ public class ShakeDetector {
                                     Float.valueOf(attractionLatitude.getText().toString()),
                                     Float.valueOf(attractionLongitude.getText().toString()));
 
-                            for (DataSnapshot item : globalData.getDsArrayList()) {
+                            for (DataSnapshot item : globalClass.getDsArrayList()) {
                                 if (item.getKey().equals(attractionTitle.getText().toString().trim())) {
                                     attractionExists = true;
                                 }

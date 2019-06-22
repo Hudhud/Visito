@@ -1,13 +1,8 @@
 package dtu.app.visito;
 
 import android.app.Activity;
-import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.webkit.WebView;
-import android.widget.Toast;
 
 public class Weather extends Activity {
 

@@ -1,13 +1,13 @@
 package dtu.app.visito;
 
-import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
@@ -15,24 +15,12 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 import com.google.firebase.database.DataSnapshot;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.widget.LinearLayout;
-
-
-
-import org.w3c.dom.Attr;
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
-import dtu.app.visito.R;
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 public class AttractionsList extends AppCompatActivity {
@@ -57,7 +45,6 @@ public class AttractionsList extends AppCompatActivity {
 
     private Boolean isDescriptionOpen = false;
     private Boolean isMapOpen = false;
-
 
 
     @Override
@@ -86,6 +73,7 @@ public class AttractionsList extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.attraction_list);
 
+
         getSupportActionBar().setTitle("Top attractions");
         mListView=(ListView)findViewById(R.id.lvAttractionsList);
         mAttractionDescriptionLayout = (LinearLayout) findViewById(R.id.description_layout);
@@ -94,13 +82,15 @@ public class AttractionsList extends AppCompatActivity {
         mTitle = (TextView) findViewById(R.id.title);
         mAttractionDescription = (TextView) findViewById(R.id.attractionDescription);
         map = findViewById(R.id.mapBTN);
-        mapDirection =  findViewById(R.id.direction);
+        mapDirection =  findViewById(R.id.directionBtn);
         mapFragment = findViewById(R.id.mapFragment);
         map.setTag(1);
         map.setText("Show map");
-        final GlobalData globalData = (GlobalData) getApplicationContext();
+        final GlobalClass globalClass = (GlobalClass) getApplicationContext();
+        final ProgressDialog pd = new ProgressDialog(AttractionsList.this);
 
-        lstAttractionInfo = globalData.getDsArrayList();
+
+        lstAttractionInfo = globalClass.getDsArrayList();
 
         for (DataSnapshot i: lstAttractionInfo){
             lstAttractionTitles.add(i.child("title").getValue().toString());
@@ -121,8 +111,12 @@ public class AttractionsList extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view,
                                     final int position, long id) {
 
-                globalData.checkConnectivity("You cannot view the images of the attractions without" +
+                globalClass.checkConnectivity("You cannot view the images of the attractions without" +
                         "an internet connection");
+
+                pd.setMessage("Please wait...");
+                pd.show();
+
                 mListView.setVisibility(View.GONE);
                 map.setVisibility(View.GONE);
                 mapFragment.setVisibility(View.GONE);
@@ -132,7 +126,7 @@ public class AttractionsList extends AppCompatActivity {
                 getSupportActionBar().hide();
 
                 mImageAttraction.setImageBitmap(null);
-                adapter.loadImageFromURL(mImageAttraction, lstAttractionIcons.get(position));
+
                 mapDirection.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -140,9 +134,29 @@ public class AttractionsList extends AppCompatActivity {
                     }
                 });
 
+                AsyncTask.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        adapter.loadImageFromURL(mImageAttraction, lstAttractionIcons.get(position));
+                    }
+                });
 
-                mAttractionDescriptionLayout.setVisibility(View.VISIBLE);
-                isDescriptionOpen=true;
+                final Timer t = new Timer();
+                t.schedule(new TimerTask() {
+                    public void run() {
+                        pd.dismiss();
+                        t.cancel();
+
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                mAttractionDescriptionLayout.setVisibility(View.VISIBLE);
+                            }
+                        });
+                        isDescriptionOpen=true;
+                    }
+                }, 3000);
+
 
             }
         });
@@ -165,12 +179,7 @@ public class AttractionsList extends AppCompatActivity {
                 }
             }
         });
-
-
-
     }
-
-
 
     public void addFragment(Fragment fragment, boolean addToBackStack, String tag) {
         FragmentManager manager = getSupportFragmentManager();
