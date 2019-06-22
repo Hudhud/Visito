@@ -70,6 +70,12 @@ public class AttractionsList extends AppCompatActivity {
             getSupportActionBar().show();
             map.setVisibility(View.VISIBLE);
             return;
+        } else if (isMapOpen){
+            mListView.setVisibility(View.VISIBLE);
+            mapFragment.setVisibility(View.GONE);
+            map.setText("Show map");
+            getSupportActionBar().show();
+            isMapOpen=false;
         }
         super.onBackPressed();
     }
@@ -123,7 +129,7 @@ public class AttractionsList extends AppCompatActivity {
                 mScrollView.scrollTo(0,0);
                 getSupportActionBar().hide();
 
-
+                mImageAttraction.setImageBitmap(null);
                 adapter.loadImageFromURL(mImageAttraction, lstAttractionIcons.get(position));
                 mapDirection.setOnClickListener(new View.OnClickListener() {
                     @Override
