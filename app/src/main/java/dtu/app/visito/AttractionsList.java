@@ -43,6 +43,7 @@ public class AttractionsList extends AppCompatActivity {
     private Boolean isMapOpen = false;
     private ProgressDialog pd;
     private GlobalClass globalClass;
+    private CustomListAdapter adapter;
 
 
     @Override
@@ -67,6 +68,7 @@ public class AttractionsList extends AppCompatActivity {
         Intent i = new Intent(AttractionsList.this, MainActivity.class);
         startActivity(i);
         finish();
+        adapter.clear();
     }
 
     @Override
@@ -103,8 +105,9 @@ public class AttractionsList extends AppCompatActivity {
         }
 
 
-        final CustomListAdapter adapter=new CustomListAdapter(this, lstAttractionTitles, lstAttractionIcons);
+        adapter=new CustomListAdapter(this, lstAttractionTitles, lstAttractionIcons);
         mListView.setAdapter(adapter);
+
 
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
