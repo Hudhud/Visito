@@ -18,6 +18,8 @@ import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import com.google.firebase.database.DataSnapshot;
+import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -118,19 +120,19 @@ public class AttractionsList extends AppCompatActivity {
                 globalClass.checkConnectivity("You cannot view the images of the attractions without" +
                         "an internet connection");
 
-                pd.setMessage("Please wait...");
-                pd.setCanceledOnTouchOutside(false);
-                pd.setCancelable(false);
-                pd.show();
-
                 mListView.setVisibility(View.GONE);
                 map.setVisibility(View.GONE);
                 mapFragment.setVisibility(View.GONE);
+
                 mTitle.setText(lstAttractionTitles.get(position));
                 mAttractionDescription.setText(lstAttractionDescription.get(position));
-                getSupportActionBar().hide();
+                mAttractionDescriptionLayout.setVisibility(View.VISIBLE);
+                mScrollView.scrollTo(0,0);
 
                 mImageAttraction.setImageBitmap(null);
+                Picasso.get().load(lstAttractionIcons.get(position)).into(mImageAttraction);
+
+                isDescriptionOpen=true;
 
                 mapDirection.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -138,33 +140,6 @@ public class AttractionsList extends AppCompatActivity {
                         showDirection(lstAttractionLat.get(position), lstAttractionLong.get(position));
                     }
                 });
-
-                AsyncTask.execute(new Runnable() {
-                    @Override
-                    public void run() {
-                        globalClass.loadImageFromURL(mImageAttraction, lstAttractionIcons.get(position));
-                    }
-                });
-
-                final Timer t = new Timer();
-                t.schedule(new TimerTask() {
-                    public void run() {
-                        pd.dismiss();
-                        t.cancel();
-
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                mAttractionDescriptionLayout.setVisibility(View.VISIBLE);
-                                mScrollView.scrollTo(0,0);
-                            }
-                        });
-                        isDescriptionOpen=true;
-                    }
-                }, 3000);
-
-
-
 
             }
         });
