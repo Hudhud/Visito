@@ -3,7 +3,6 @@ package dtu.app.visito;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.graphics.BitmapFactory;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -17,7 +16,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import java.io.InputStream;
+import com.squareup.picasso.Picasso;
 import java.net.URL;
 
 public class ShakeDetector {
@@ -195,7 +194,7 @@ public class ShakeDetector {
 
                                 try {
                                     URL url = new URL(attractionImageURL.getText().toString().trim());
-                                    BitmapFactory.decodeStream((InputStream)url.getContent());
+                                    Picasso.get().load(url.toString());
 
                                     mDatabase.child(attractionTitle.getText().toString().trim()).setValue(attraction).addOnSuccessListener(new OnSuccessListener<Void>() {
                                         @Override

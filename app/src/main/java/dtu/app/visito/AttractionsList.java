@@ -3,7 +3,6 @@ package dtu.app.visito;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -19,11 +18,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import com.google.firebase.database.DataSnapshot;
 import com.squareup.picasso.Picasso;
-
 import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
-
 
 public class AttractionsList extends AppCompatActivity {
 
@@ -43,7 +38,6 @@ public class AttractionsList extends AppCompatActivity {
     private LinearLayout mapFragment;
     private Boolean isDescriptionOpen = false;
     private Boolean isMapOpen = false;
-    private ProgressDialog pd;
     private GlobalClass globalClass;
     private CustomListAdapter adapter;
 
@@ -92,8 +86,6 @@ public class AttractionsList extends AppCompatActivity {
         map.setTag(1);
         map.setText("Show map");
         globalClass = (GlobalClass) getApplicationContext();
-        pd = new ProgressDialog(AttractionsList.this);
-
 
         lstAttractionInfo = globalClass.getDsArrayList();
 

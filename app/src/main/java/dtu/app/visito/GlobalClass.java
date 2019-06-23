@@ -52,9 +52,6 @@ public class GlobalClass extends Application {
     }
 
     public void loadImageFromURL(ImageView iv, String imgURL) {
-        StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
-                .permitAll()
-                .build());
         Picasso.get().load(imgURL).into(iv);
     }
 
