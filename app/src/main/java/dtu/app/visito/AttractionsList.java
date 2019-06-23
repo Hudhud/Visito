@@ -117,6 +117,8 @@ public class AttractionsList extends AppCompatActivity {
                         "an internet connection");
 
                 pd.setMessage("Please wait...");
+                pd.setCanceledOnTouchOutside(false);
+                pd.setCancelable(false);
                 pd.show();
 
                 mListView.setVisibility(View.GONE);
