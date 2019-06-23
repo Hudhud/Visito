@@ -12,7 +12,9 @@
         android:layout_marginBottom="10dp"
         android:layout_weight="0"
         android:text="Convert from "
-        android:textSize="18sp" />
+        android:textSize="18sp"
+        android:textAlignment="center"
+        android:textStyle="bold"/>
 
     <Spinner
         android:id="@+id/spinSearch"
@@ -35,7 +37,7 @@
         android:layout_marginBottom="40dp"
         android:backgroundTint="@color/colorPrimary"
         android:ems="10"
-        android:digits="0123456789."
+        android:digits=".0123456789"
         android:hint="Enter amount"
         android:inputType="numberDecimal|numberSigned" />
 

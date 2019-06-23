@@ -1,5 +1,6 @@
 package dtu.app.visito;
 
+import android.support.annotation.VisibleForTesting;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -75,8 +76,18 @@ public class Currency extends AppCompatActivity {
                     public void onTextChanged(CharSequence s, int start,
                                               int before, int count) {
                         double finalAmount;
+                        String input;
                         if (amount.getText().length() >= 1) {
-                            finalAmount = Double.valueOf(amount.getText().toString());
+
+                            if (amount.getText().toString().startsWith(".")){
+
+                                input = "0"+amount.getText().toString();
+                                finalAmount = Double.valueOf(input);
+                            } else {
+
+                                finalAmount = Double.valueOf(amount.getText().toString());
+                            }
+
 
                             if (spinner1.getSelectedItem() == "Select a currency") {
                             }
