@@ -31,7 +31,6 @@ public class AttractionsList extends AppCompatActivity {
     private LinearLayout mAttractionDescriptionLayout;
     private ScrollView mScrollView;
     private ImageView mImageAttraction;
-    private TextView mTitle;
     private TextView mAttractionDescription;
     private ArrayList<DataSnapshot> lstAttractionInfo;
     private ArrayList<String> lstAttractionTitles = new ArrayList<>();
@@ -69,7 +68,6 @@ public class AttractionsList extends AppCompatActivity {
         Intent i = new Intent(AttractionsList.this, MainActivity.class);
         startActivity(i);
         finish();
-        adapter.clear();
     }
 
     @Override
@@ -83,7 +81,6 @@ public class AttractionsList extends AppCompatActivity {
         mAttractionDescriptionLayout = findViewById(R.id.description_layout);
         mScrollView = findViewById(R.id.scrollView);
         mImageAttraction = findViewById(R.id.imageAttraction);
-        mTitle = findViewById(R.id.title);
         mAttractionDescription = findViewById(R.id.attractionDescription);
         map = findViewById(R.id.mapBTN);
         mapDirection =  findViewById(R.id.directionBtn);
@@ -119,13 +116,15 @@ public class AttractionsList extends AppCompatActivity {
                 map.setVisibility(View.GONE);
                 mapFragment.setVisibility(View.GONE);
 
-                mTitle.setText(lstAttractionTitles.get(position));
+                getSupportActionBar().setTitle(lstAttractionTitles.get(position));
                 mAttractionDescription.setText(lstAttractionDescription.get(position));
                 mAttractionDescriptionLayout.setVisibility(View.VISIBLE);
                 mScrollView.scrollTo(0,0);
 
                 mImageAttraction.setImageBitmap(null);
                 Picasso.get().load(lstAttractionIcons.get(position)).into(mImageAttraction);
+
+
 
                 isDescriptionOpen=true;
 
