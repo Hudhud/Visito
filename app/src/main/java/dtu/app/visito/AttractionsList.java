@@ -19,6 +19,11 @@ import android.widget.TextView;
 import com.google.firebase.database.DataSnapshot;
 import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 public class AttractionsList extends AppCompatActivity {
 
@@ -86,8 +91,7 @@ public class AttractionsList extends AppCompatActivity {
         map.setTag(1);
         map.setText("Show map");
         globalClass = (GlobalClass) getApplicationContext();
-
-        lstAttractionInfo = globalClass.getDsArrayList();
+        lstAttractionInfo = globalClass.updateDsArrayList();
 
         for (DataSnapshot i: lstAttractionInfo){
             lstAttractionTitles.add(i.child("title").getValue().toString());

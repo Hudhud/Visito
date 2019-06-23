@@ -30,8 +30,6 @@ public class MainActivity extends Activity {
         final GlobalClass globalClass = (GlobalClass) getApplicationContext();
         pd = new ProgressDialog(MainActivity.this);
 
-        pd.dismiss();
-
         title = findViewById(R.id.title);
         topAttractionsBtn = findViewById(R.id.topAttractionsBtn);
         weatherBtn = findViewById(R.id.weatherBtn);
