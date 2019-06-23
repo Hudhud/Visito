@@ -63,12 +63,5 @@
         android:layout_gravity="center_horizontal"
         android:ems="10"
          />
-    <Button
-        android:id="@+id/clearBTN"
-        android:layout_width="300dp"
-        android:layout_height="60dp"
-        android:text="Clear"
-        android:backgroundTint="@color/colorPrimary"
-        android:textColor="@android:color/white"
-        android:layout_gravity="center_horizontal"/>
+
 </LinearLayout>

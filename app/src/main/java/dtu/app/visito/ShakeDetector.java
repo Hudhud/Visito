@@ -3,26 +3,24 @@ package dtu.app.visito;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.graphics.BitmapFactory;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import java.io.InputStream;
+import java.net.URL;
 
 public class ShakeDetector {
-
 
     private Context mContext;
     private SensorManager sensorManager;
@@ -31,12 +29,13 @@ public class ShakeDetector {
     private int dialogCounter;
     private FirebaseDatabase mFirebaseDatabase = FirebaseDatabase.getInstance();
     private DatabaseReference mDatabase = mFirebaseDatabase.getReference();
-
+    private GlobalClass globalClass;
     private boolean attractionExists;
 
     public ShakeDetector(Context mContext, Activity act) {
         this.mContext = mContext;
         this.act = act;
+        this.globalClass = (GlobalClass) act.getApplicationContext();
     }
 
     public void detectShake() {
@@ -76,16 +75,9 @@ public class ShakeDetector {
 
     public void displayDialog() {
 
-        ConnectivityManager cm =
-                (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (globalClass.checkConnectivity("You cannot create a new attraction without an internet connection")){
 
-        final NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-
-        if (activeNetwork == null || activeNetwork.isConnected() == false || activeNetwork.isConnectedOrConnecting() == false) {
-            Toast.makeText(mContext, "You cannot create a new attraction without an internet connection", Toast.LENGTH_LONG).show();
-        } else {
-
-            final GlobalData globalData = (GlobalData) mContext.getApplicationContext();
+            final GlobalClass globalClass = (GlobalClass) mContext.getApplicationContext();
 
             LayoutInflater layoutInflater = LayoutInflater.from(act);
             final View inputDialog = layoutInflater.inflate(R.layout.input_dialog, null);
@@ -171,9 +163,7 @@ public class ShakeDetector {
             okBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (activeNetwork == null || activeNetwork.isConnected() == false || activeNetwork.isConnectedOrConnecting() == false) {
-                        Toast.makeText(mContext, "You cannot create a new attraction without an internet connection", Toast.LENGTH_SHORT).show();
-                    } else {
+                   if (globalClass.checkConnectivity("You cannot create a new attraction without an internet connection")){
                         if (attractionTitle.getText().length() < 1 ||
                                 attractionImageURL.getText().length() < 1 ||
                                 attractionDescription.getText().length() < 1 ||
@@ -185,27 +175,40 @@ public class ShakeDetector {
                                 Float.valueOf(attractionLongitude.getText().toString()) < -180 || Float.valueOf(attractionLongitude.getText().toString()) > 180) {
                             errorText.setVisibility(View.VISIBLE);
                             errorText.setText("Incorrect latitude and/or longitude");
+
                         } else {
+
+
 
                             Attraction attraction = new Attraction(attractionTitle.getText().toString().trim(),
                                     attractionDescription.getText().toString(), attractionImageURL.getText().toString().trim(),
                                     Float.valueOf(attractionLatitude.getText().toString()),
                                     Float.valueOf(attractionLongitude.getText().toString()));
 
-                            for (DataSnapshot item : globalData.getDsArrayList()) {
+                            for (DataSnapshot item : globalClass.getDsArrayList()) {
                                 if (item.getKey().equals(attractionTitle.getText().toString().trim())) {
                                     attractionExists = true;
                                 }
                             }
 
                             if (attractionExists == false) {
-                                mDatabase.child(attractionTitle.getText().toString().trim()).setValue(attraction).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                    @Override
-                                    public void onSuccess(Void aVoid) {
-                                        inputAlert.dismiss();
-                                        dialogCounter = 0;
-                                    }
-                                });
+
+                                try {
+                                    URL url = new URL(attractionImageURL.getText().toString().trim());
+                                    BitmapFactory.decodeStream((InputStream)url.getContent());
+
+                                    mDatabase.child(attractionTitle.getText().toString().trim()).setValue(attraction).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void aVoid) {
+                                            inputAlert.dismiss();
+                                            dialogCounter = 0;
+                                        }
+                                    });
+                                } catch (Exception e){
+                                    errorText.setVisibility(View.VISIBLE);
+                                    errorText.setText("Invalid image URL");
+                                }
+
                             } else {
                                 errorText.setVisibility(View.VISIBLE);
                                 errorText.setText("Attraction already exists");
