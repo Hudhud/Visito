@@ -18,17 +18,21 @@ import java.net.URL;
 import java.util.ArrayList;
 
 public class GlobalClass extends Application {
-    private FirebaseDatabase mFirebaseDatabase;
-    private DatabaseReference mDatabase;
+    private FirebaseDatabase firebaseDatabaseRef;
+    private DatabaseReference databaseRef;
     private ArrayList<DataSnapshot> dsArrayList = new ArrayList<>();
     public ArrayList<DataSnapshot> getDsArrayList() {
         return dsArrayList;
     }
 
-    public DatabaseReference getmDatabase(){
-        mFirebaseDatabase = FirebaseDatabase.getInstance();
-        mDatabase = mFirebaseDatabase.getReference();
-        return mDatabase;
+    public FirebaseDatabase getFirebaseDatabaseRef(){
+        firebaseDatabaseRef = FirebaseDatabase.getInstance();
+        return firebaseDatabaseRef;
+    }
+
+    public DatabaseReference getDatabaseRef(){
+        databaseRef = getFirebaseDatabaseRef().getReference();
+        return databaseRef;
     }
 
     public boolean checkConnectivity(String errorMsg){

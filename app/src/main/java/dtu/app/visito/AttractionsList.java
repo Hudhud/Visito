@@ -146,6 +146,7 @@ public class AttractionsList extends AppCompatActivity {
                     }
                 });
 
+
                 final Timer t = new Timer();
                 t.schedule(new TimerTask() {
                     public void run() {

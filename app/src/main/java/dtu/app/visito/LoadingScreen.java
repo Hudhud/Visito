@@ -13,13 +13,19 @@ import com.google.firebase.database.ValueEventListener;
 public class LoadingScreen extends Activity {
 
     private TextView title, slogan, loadingText;
+    private GlobalClass globalClass;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.loading_screen);
 
-        final GlobalClass globalClass = (GlobalClass) getApplicationContext();
+        globalClass = (GlobalClass) getApplicationContext();
+        globalClass.getFirebaseDatabaseRef().setPersistenceEnabled(true);
+        globalClass.getDatabaseRef().keepSynced(true);
+
+        final boolean initialRun = getSharedPreferences("PREFERENCE", MODE_PRIVATE)
+                .getBoolean("initialRun", true);
 
         Typeface tf = Typeface.createFromAsset(getAssets(), "fonts/COMIC.TTF");
 
@@ -32,7 +38,22 @@ public class LoadingScreen extends Activity {
         loadingText = findViewById(R.id.loadingText);
         loadingText.setTypeface(tf);
 
-        globalClass.getmDatabase().addValueEventListener(new ValueEventListener() {
+        if (initialRun) {
+            getSharedPreferences("PREFERENCE", MODE_PRIVATE).edit().
+                    putBoolean("initialRun", false).commit();
+
+            if (globalClass.checkConnectivity("You have to enable an internet connection on the initial run of the app")){
+                downloadDataFromFirebase();
+            }
+        }
+
+        downloadDataFromFirebase();
+
+    }
+
+    public void downloadDataFromFirebase(){
+
+        globalClass.getDatabaseRef().addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange (DataSnapshot dataSnapshot){
                 for (DataSnapshot child: dataSnapshot.getChildren()) {
@@ -42,35 +63,12 @@ public class LoadingScreen extends Activity {
                 startActivity(i);
                 finish();
 
-
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
         });
-
-        /*
-        Thread welcomeThread = new Thread() {
-
-            @Override
-            public void run() {
-                try {
-                    super.run();
-                    sleep(10000);  //Delay of 10 seconds
-                    Intent i = new Intent(LoadingScreen.this, MainActivity.class);
-                    startActivity(i);
-                    finish();
-                } catch (Exception e) {
-                    System.out.println(e.getMessage());
-                }
-            }
-        };
-
-        welcomeThread.start();
-
-        */
     }
 
 }
