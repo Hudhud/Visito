@@ -32,6 +32,12 @@ dependencies {
     implementation 'com.google.firebase:firebase-storage:16.1.0'
     implementation 'com.google.firebase:firebase-database:16.1.0'
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+    implementation(
+            [group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.4.1'],
+            [group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: '2.4.1'],
+            [group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.4.1']
+    )
+
     implementation 'com.squareup.picasso:picasso:+'
     testCompile 'junit:junit:4.12'
     implementation 'com.google.android.gms:play-services-maps:16.1.0'

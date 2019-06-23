@@ -1,6 +1,5 @@
 package dtu.app.visito;
 
-import android.support.annotation.VisibleForTesting;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;

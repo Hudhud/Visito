@@ -1,6 +1,5 @@
 package dtu.app.visito;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -16,14 +15,9 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import com.google.firebase.database.DataSnapshot;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.Set;
 
 public class AttractionsList extends AppCompatActivity {
 
@@ -32,7 +26,7 @@ public class AttractionsList extends AppCompatActivity {
     private ScrollView mScrollView;
     private ImageView mImageAttraction;
     private TextView mAttractionDescription;
-    private ArrayList<DataSnapshot> lstAttractionInfo;
+    private ArrayList<Attraction> lstAttractionInfo;
     private ArrayList<String> lstAttractionTitles = new ArrayList<>();
     private ArrayList<String> lstAttractionIcons = new ArrayList<>();
     private ArrayList<String> lstAttractionDescription = new ArrayList<>();
@@ -55,6 +49,7 @@ public class AttractionsList extends AppCompatActivity {
             mapFragment.setVisibility(View.VISIBLE);
             getSupportActionBar().show();
             map.setVisibility(View.VISIBLE);
+            getSupportActionBar().setTitle("Top Attractions");
             return;
         } else if (isMapOpen){
             mListView.setVisibility(View.VISIBLE);
@@ -75,28 +70,27 @@ public class AttractionsList extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.attraction_list);
 
-
-        getSupportActionBar().setTitle("Top attractions");
+        getSupportActionBar().setTitle("Top Attractions");
         mListView= findViewById(R.id.lvAttractionsList);
         mAttractionDescriptionLayout = findViewById(R.id.description_layout);
         mScrollView = findViewById(R.id.scrollView);
         mImageAttraction = findViewById(R.id.imageAttraction);
         mAttractionDescription = findViewById(R.id.attractionDescription);
         map = findViewById(R.id.mapBTN);
-        mapDirection =  findViewById(R.id.directionBtn);
+        mapDirection =  findViewById(R.id.direction);
         mapFragment = findViewById(R.id.mapFragment);
         map.setTag(1);
         map.setText("Show map");
         globalClass = (GlobalClass) getApplicationContext();
 
-        lstAttractionInfo = globalClass.updateDsArrayList();
+        lstAttractionInfo = Utils.clone(globalClass.getDsArrayList(), new TypeReference<ArrayList<Attraction>>() {});
 
-        for (DataSnapshot i: lstAttractionInfo){
-            lstAttractionTitles.add(i.child("title").getValue().toString());
-            lstAttractionIcons.add(i.child("img").getValue().toString());
-            lstAttractionDescription.add(i.child("body").getValue().toString());
-            lstAttractionLat.add(Float.valueOf(i.child("latitude").getValue().toString()));
-            lstAttractionLong.add(Float.valueOf(i.child("longitude").getValue().toString()));
+        for (Attraction attr: lstAttractionInfo){
+            lstAttractionTitles.add(attr.getTitle());
+            lstAttractionIcons.add(attr.getImg());
+            lstAttractionDescription.add(attr.getBody());
+            lstAttractionLat.add(attr.getLatitude());
+            lstAttractionLong.add(attr.getLongitude());
         }
 
 
@@ -123,7 +117,6 @@ public class AttractionsList extends AppCompatActivity {
 
                 mImageAttraction.setImageBitmap(null);
                 Picasso.get().load(lstAttractionIcons.get(position)).into(mImageAttraction);
-
 
 
                 isDescriptionOpen=true;

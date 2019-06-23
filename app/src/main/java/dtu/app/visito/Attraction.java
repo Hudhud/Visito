@@ -1,10 +1,12 @@
 package dtu.app.visito;
 
 
-public class Attraction {
+import java.io.Serializable;
 
-    public String title, body, img;
-    public float latitude, longitude;
+public class Attraction implements Serializable {
+
+    private String title, body, img;
+    private float latitude, longitude;
 
     public Attraction (String title, String body, String img, float latitude, float longitude){
         this.title = title;
@@ -13,5 +15,30 @@ public class Attraction {
         this.latitude = latitude;
         this.longitude = longitude;
     }
+
+    public Attraction() {
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getBody() {
+        return body;
+    }
+
+    public String getImg() {
+        return img;
+    }
+
+    public float getLatitude() {
+        return latitude;
+    }
+
+
+    public float getLongitude() {
+        return longitude;
+    }
+
 
 }

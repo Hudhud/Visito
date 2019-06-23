@@ -23,7 +23,6 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.database.DataSnapshot;
 
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 
@@ -120,10 +119,10 @@ public class MapFragment extends Fragment {
                     });
                 }
 
-                    for (DataSnapshot dataSnapShot: gd.getDsArrayList()) {
-                        float lat =Float.valueOf(dataSnapShot.child("latitude").getValue().toString());
-                        float long1 = Float.valueOf(dataSnapShot.child("longitude").getValue().toString());
-                        String tit = dataSnapShot.getKey();
+                    for (Attraction attraction: gd.getDsArrayList()) {
+                        float lat = attraction.getLatitude();
+                        float long1 = attraction.getLongitude();
+                        String tit = attraction.getTitle();
                         mMap.addMarker(new MarkerOptions()
                                 .position(new LatLng(lat,long1))
                                 .title(tit));

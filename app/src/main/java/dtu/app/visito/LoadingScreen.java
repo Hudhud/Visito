@@ -4,13 +4,11 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
+import android.os.Handler;
 import android.widget.TextView;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.ValueEventListener;
 
-public class LoadingScreen extends Activity {
+
+public class LoadingScreen extends Activity{
 
     private TextView title, slogan, loadingText;
     private GlobalClass globalClass;
@@ -21,8 +19,6 @@ public class LoadingScreen extends Activity {
         setContentView(R.layout.loading_screen);
 
         globalClass = (GlobalClass) getApplicationContext();
-        globalClass.getFirebaseDatabaseRef().setPersistenceEnabled(true);
-        globalClass.getDatabaseRef().keepSynced(true);
 
         final boolean initialRun = getSharedPreferences("PREFERENCE", MODE_PRIVATE)
                 .getBoolean("initialRun", true);
@@ -43,32 +39,23 @@ public class LoadingScreen extends Activity {
                     putBoolean("initialRun", false).commit();
 
             if (globalClass.checkConnectivity("You have to enable an internet connection on the initial run of the app")){
-                downloadDataFromFirebase();
+
+            } else{
+                startMainAct();
             }
         }
-
-        downloadDataFromFirebase();
-
+        startMainAct();
     }
 
-    public void downloadDataFromFirebase(){
-
-        globalClass.getDatabaseRef().addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange (DataSnapshot dataSnapshot){
-                for (DataSnapshot child: dataSnapshot.getChildren()) {
-                    globalClass.getDsArrayList().add(child);
-                }
-                Intent i = new Intent(LoadingScreen.this, MainActivity.class);
+    private void startMainAct(){
+        final Intent i = new Intent(LoadingScreen.this, MainActivity.class);
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            public void run() {
                 startActivity(i);
                 finish();
-
             }
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+        }, 5000);
 
-            }
-        });
     }
-
 }

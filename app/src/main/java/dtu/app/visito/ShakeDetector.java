@@ -13,7 +13,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
@@ -25,7 +24,7 @@ public class ShakeDetector {
     private SensorManager sensorManager;
     private float acelCurrentValue, acelLastValue, accelExGravity;
     private Activity act;
-    private int dialogCounter;
+    private boolean canOpenLoginDialog = true;
     private FirebaseDatabase mFirebaseDatabase = FirebaseDatabase.getInstance();
     private DatabaseReference mDatabase = mFirebaseDatabase.getReference();
     private GlobalClass globalClass;
@@ -58,11 +57,9 @@ public class ShakeDetector {
             float delta = acelCurrentValue - acelLastValue;
             accelExGravity = accelExGravity * 0.9f + delta;
 
-            if (accelExGravity > 20) {
-                if (dialogCounter < 1) {
-                    dialogCounter++;
-                    displayDialog();
-                }
+            if (accelExGravity > 5) {
+                displayDialog();
+                canOpenLoginDialog = false;
             }
         }
 
@@ -82,14 +79,11 @@ public class ShakeDetector {
             final View inputDialog = layoutInflater.inflate(R.layout.input_dialog, null);
             final View loginDialog  = layoutInflater.inflate(R.layout.login_dialog, null);
 
-
             AlertDialog.Builder loginDialogBuilder = new AlertDialog.Builder(act);
             loginDialogBuilder.setView(loginDialog);
 
             AlertDialog.Builder inputDialogBuilder = new AlertDialog.Builder(act);
             inputDialogBuilder.setView(inputDialog);
-
-
 
             final EditText attractionTitle = inputDialog.findViewById(R.id.attractionTitle);
             final EditText attractionImageURL = inputDialog.findViewById(R.id.attractionURL);
@@ -105,26 +99,20 @@ public class ShakeDetector {
             final EditText passwordField = loginDialog.findViewById(R.id.passwordField);
             final TextView error = loginDialog.findViewById(R.id.error);
 
-
             final Button loginBtn = loginDialog.findViewById(R.id.signin);
             final Button cancelLoginBtn = loginDialog.findViewById(R.id.cancelBtnLogin);
 
-
             final AlertDialog loginAlert = loginDialogBuilder.create();
 
-
             final AlertDialog inputAlert = inputDialogBuilder.create();
-
 
             cancelLoginBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     loginAlert.dismiss();
-                    dialogCounter = 0;
+                    canOpenLoginDialog = true;
                 }
             });
-
-
 
             loginBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -133,8 +121,6 @@ public class ShakeDetector {
                     if (passwordField.getText().toString().equals( "admin")){
 
                         loginAlert.dismiss();
-                        dialogCounter = 0;
-
                         inputAlert.show();
 
                     } else {
@@ -145,6 +131,7 @@ public class ShakeDetector {
                 }
             });
 
+            if (canOpenLoginDialog)
             loginAlert.show();
 
 
@@ -152,11 +139,9 @@ public class ShakeDetector {
                 @Override
                 public void onClick(View view) {
                     inputAlert.dismiss();
-                    dialogCounter = 0;
+                    canOpenLoginDialog = true;
                 }
             });
-
-
 
 
             okBtn.setOnClickListener(new View.OnClickListener() {
@@ -177,15 +162,13 @@ public class ShakeDetector {
 
                         } else {
 
-
-
                             Attraction attraction = new Attraction(attractionTitle.getText().toString().trim(),
                                     attractionDescription.getText().toString(), attractionImageURL.getText().toString().trim(),
                                     Float.valueOf(attractionLatitude.getText().toString()),
                                     Float.valueOf(attractionLongitude.getText().toString()));
 
-                            for (DataSnapshot item : globalClass.getDsArrayList()) {
-                                if (item.getKey().equals(attractionTitle.getText().toString().trim())) {
+                            for (Attraction attr : globalClass.getDsArrayList()) {
+                                if (attr.getTitle().equals(attractionTitle.getText().toString().trim())) {
                                     attractionExists = true;
                                 }
                             }
@@ -196,11 +179,13 @@ public class ShakeDetector {
                                     URL url = new URL(attractionImageURL.getText().toString().trim());
                                     Picasso.get().load(url.toString());
 
-                                    mDatabase.child(attractionTitle.getText().toString().trim()).setValue(attraction).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    mDatabase.child(attractionTitle.getText().toString().trim())
+                                            .setValue(attraction)
+                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
                                         @Override
                                         public void onSuccess(Void aVoid) {
                                             inputAlert.dismiss();
-                                            dialogCounter = 0;
+                                            canOpenLoginDialog = true;
                                         }
                                     });
                                 } catch (Exception e){
