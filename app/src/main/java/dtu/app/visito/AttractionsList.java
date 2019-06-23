@@ -91,6 +91,7 @@ public class AttractionsList extends AppCompatActivity {
         map.setTag(1);
         map.setText("Show map");
         globalClass = (GlobalClass) getApplicationContext();
+
         lstAttractionInfo = globalClass.updateDsArrayList();
 
         for (DataSnapshot i: lstAttractionInfo){
@@ -99,13 +100,11 @@ public class AttractionsList extends AppCompatActivity {
             lstAttractionDescription.add(i.child("body").getValue().toString());
             lstAttractionLat.add(Float.valueOf(i.child("latitude").getValue().toString()));
             lstAttractionLong.add(Float.valueOf(i.child("longitude").getValue().toString()));
-
         }
 
 
-        adapter=new CustomListAdapter(this, lstAttractionTitles, lstAttractionIcons);
+        adapter = new CustomListAdapter(this, lstAttractionTitles, lstAttractionIcons);
         mListView.setAdapter(adapter);
-
 
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 

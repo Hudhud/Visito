@@ -34,13 +34,19 @@ public class GlobalClass extends Application {
         getDatabaseRef().addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange (DataSnapshot dataSnapshot){
-                for (DataSnapshot child: dataSnapshot.getChildren()) {
-                    tempArray.add(child);
+
+                if (tempArray != null && dsArrayList != null) {
+                    tempArray.clear();
+                    for (DataSnapshot child: dataSnapshot.getChildren()) {
+                        tempArray.add(child);
+                    }
+
+                    dsArrayList.clear();
+                    if (!dsArrayList.equals(tempArray)) {
+                        dsArrayList.addAll(tempArray);
+                    }
                 }
 
-                if (!dsArrayList.equals(tempArray)) {
-                    dsArrayList = tempArray;
-                }
 
             }
             @Override
