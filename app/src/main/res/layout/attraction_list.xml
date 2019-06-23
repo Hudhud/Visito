@@ -64,12 +64,12 @@
         <ScrollView
             android:id="@+id/scrollView"
             android:layout_width="match_parent"
-            android:layout_height="325dp">
+            android:layout_height="300dp">
 
             <TextView
                 android:id="@+id/attractionDescription"
                 android:layout_width="match_parent"
-                android:layout_height="296dp"
+                android:layout_height="wrap_content"
                 android:text="Description"
                 android:textAlignment="center"
                 android:textColor="@android:color/black"

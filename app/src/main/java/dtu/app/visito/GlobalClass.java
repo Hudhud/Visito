@@ -11,6 +11,7 @@ import android.widget.Toast;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -50,12 +51,7 @@ public class GlobalClass extends Application {
         StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
                 .permitAll()
                 .build());
-        try {
-            URL url = new URL(imgURL);
-            iv.setImageBitmap(BitmapFactory.decodeStream((InputStream)url.getContent()));
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-        }
+        Picasso.get().load(imgURL).into(iv);
     }
 
 }
