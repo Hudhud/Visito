@@ -18,8 +18,8 @@ public class Currency extends AppCompatActivity {
     private EditText amount;
     private Spinner spinner1;
     private TextView ResultEUR1, ResultUSD1, ResultDKK1;
+    private String[] currencies = {"DKK","USD","EURO", "Select a currency"};
 
-    String[] currencies = {"DKK","USD","EURO", "Select a currency"};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         getSupportActionBar().setTitle("Currency Converter");
@@ -89,8 +89,8 @@ public class Currency extends AppCompatActivity {
                                     ResultUSD1.setVisibility(View.VISIBLE);
                                     ResultDKK1.setVisibility(View.GONE);
 
-                                    ResultEUR1.setText("EUR: \n" + Double.toString(ResultEUR));
-                                    ResultUSD1.setText("USD: \n" + Double.toString(ResultUSD));
+                                    ResultEUR1.setText("EUR: \n" + ResultEUR);
+                                    ResultUSD1.setText("USD: \n" + ResultUSD);
 
 
                             }
@@ -102,8 +102,8 @@ public class Currency extends AppCompatActivity {
                                     ResultUSD1.setVisibility(View.VISIBLE);
                                     ResultEUR1.setVisibility(View.GONE);
 
-                                    ResultDKK1.setText("DKK: \n" +Double.toString(ResultDKK));
-                                    ResultUSD1.setText("USD: \n" +Double.toString(ResultUSD));
+                                    ResultDKK1.setText("DKK: \n" + ResultDKK);
+                                    ResultUSD1.setText("USD: \n" + ResultUSD);
 
 
                             }
@@ -116,8 +116,8 @@ public class Currency extends AppCompatActivity {
                                 ResultEUR1.setVisibility(View.VISIBLE);
                                 ResultUSD1.setVisibility(View.GONE);
 
-                                ResultDKK1.setText("DKK: \n" + Double.toString(ResultDKK));
-                                ResultEUR1.setText("EUR: \n" + Double.toString(ResultEUR));
+                                ResultDKK1.setText("DKK: \n" + ResultDKK);
+                                ResultEUR1.setText("EUR: \n" + ResultEUR);
                             } else {
                                 Toast.makeText(Currency.this, spinner1.getSelectedItem().toString(), Toast.LENGTH_LONG).show();
                             }

@@ -14,14 +14,23 @@ public class MainActivity extends Activity {
     private Button topAttractionsBtn, weatherBtn, currencyBtn;
     private TextView title;
     private Intent intent;
+    private ProgressDialog pd;
+
+    @Override
+    public void onBackPressed() {
+        moveTaskToBack(true);
+        }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        ShakeDetector sd = new ShakeDetector(getApplicationContext(), MainActivity.this);
         final GlobalClass globalClass = (GlobalClass) getApplicationContext();
-        final ProgressDialog pd = new ProgressDialog(MainActivity.this);
+        pd = new ProgressDialog(MainActivity.this);
+
+        pd.dismiss();
 
         title = findViewById(R.id.title);
         topAttractionsBtn = findViewById(R.id.topAttractionsBtn);
@@ -35,12 +44,19 @@ public class MainActivity extends Activity {
                 globalClass.checkConnectivity("You cannot view the images of the attractions without" +
                         "an internet connection");
 
+                System.out.println("Boolean "+ globalClass.isShowLoading());
+
                     intent = new Intent(MainActivity.this, AttractionsList.class);
-                    if (!globalClass.isShowLoading()) {
+
+                    if (globalClass.isShowLoading()) {
                         pd.setMessage("Please wait...");
                         pd.show();
+                    } else if (!globalClass.isShowLoading()) {
+                        pd.dismiss();
                     }
                 startActivity(intent);
+                System.out.println("Boolean "+ globalClass.isShowLoading());
+
             }
         });
 
@@ -62,7 +78,6 @@ public class MainActivity extends Activity {
             }
         });
 
-        ShakeDetector sd = new ShakeDetector(getApplicationContext(), MainActivity.this);
         sd.detectShake();
     }
 }

@@ -31,20 +31,18 @@ public class AttractionsList extends AppCompatActivity {
     private ImageView mImageAttraction;
     private TextView mTitle;
     private TextView mAttractionDescription;
-
     private ArrayList<DataSnapshot> lstAttractionInfo;
     private ArrayList<String> lstAttractionTitles = new ArrayList<>();
     private ArrayList<String> lstAttractionIcons = new ArrayList<>();
     private ArrayList<String> lstAttractionDescription = new ArrayList<>();
     private ArrayList<Float> lstAttractionLat = new ArrayList<>();
     private ArrayList<Float> lstAttractionLong = new ArrayList<>();
-
     private Button map,mapDirection;
     private LinearLayout mapFragment;
-
-
     private Boolean isDescriptionOpen = false;
     private Boolean isMapOpen = false;
+    private ProgressDialog pd;
+    private GlobalClass globalClass;
 
 
     @Override
@@ -65,7 +63,11 @@ public class AttractionsList extends AppCompatActivity {
             isMapOpen=false;
             return;
         }
-        super.onBackPressed();
+
+        globalClass.canShowLoadingDialog(true);
+        Intent i = new Intent(AttractionsList.this, MainActivity.class);
+        startActivity(i);
+        finish();
     }
 
     @Override
@@ -75,19 +77,19 @@ public class AttractionsList extends AppCompatActivity {
 
 
         getSupportActionBar().setTitle("Top attractions");
-        mListView=(ListView)findViewById(R.id.lvAttractionsList);
-        mAttractionDescriptionLayout = (LinearLayout) findViewById(R.id.description_layout);
-        mScrollView = (ScrollView) findViewById(R.id.scrollView);
-        mImageAttraction = (ImageView) findViewById(R.id.imageAttraction);
-        mTitle = (TextView) findViewById(R.id.title);
-        mAttractionDescription = (TextView) findViewById(R.id.attractionDescription);
+        mListView= findViewById(R.id.lvAttractionsList);
+        mAttractionDescriptionLayout = findViewById(R.id.description_layout);
+        mScrollView = findViewById(R.id.scrollView);
+        mImageAttraction = findViewById(R.id.imageAttraction);
+        mTitle = findViewById(R.id.title);
+        mAttractionDescription = findViewById(R.id.attractionDescription);
         map = findViewById(R.id.mapBTN);
         mapDirection =  findViewById(R.id.directionBtn);
         mapFragment = findViewById(R.id.mapFragment);
         map.setTag(1);
         map.setText("Show map");
-        final GlobalClass globalClass = (GlobalClass) getApplicationContext();
-        final ProgressDialog pd = new ProgressDialog(AttractionsList.this);
+        globalClass = (GlobalClass) getApplicationContext();
+        pd = new ProgressDialog(AttractionsList.this);
 
 
         lstAttractionInfo = globalClass.getDsArrayList();
@@ -136,7 +138,7 @@ public class AttractionsList extends AppCompatActivity {
                 AsyncTask.execute(new Runnable() {
                     @Override
                     public void run() {
-                        adapter.loadImageFromURL(mImageAttraction, lstAttractionIcons.get(position));
+                        globalClass.loadImageFromURL(mImageAttraction, lstAttractionIcons.get(position));
                     }
                 });
 

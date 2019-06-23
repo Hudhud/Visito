@@ -46,7 +46,7 @@ public class MapFragment extends Fragment {
 
     @Override
     public void onRequestPermissionsResult(int requestCode,
-                                           String permissions[], int[] grantResults) {
+                                           String[] permissions, int[] grantResults) {
         switch (requestCode) {
 
 
@@ -145,8 +145,8 @@ public class MapFragment extends Fragment {
 
     public void isLocationServiceEnabled(){
         LocationManager locationManager = null;
-        boolean isGPSEnabled= false;
-        boolean isNetworkEnabled = false;
+        boolean isGPSEnabled;
+        boolean isNetworkEnabled;
 
         if(locationManager == null)
             locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
@@ -155,7 +155,7 @@ public class MapFragment extends Fragment {
         isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
 
         if (isGPSEnabled == false && isNetworkEnabled == false)
-            Toast.makeText(getActivity(), "Enable Location",
+            Toast.makeText(getActivity(), "Enable Location service",
                     Toast.LENGTH_LONG).show();
     }
 }

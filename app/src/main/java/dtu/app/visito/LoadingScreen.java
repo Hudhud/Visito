@@ -32,8 +32,6 @@ public class LoadingScreen extends Activity {
         loadingText = findViewById(R.id.loadingText);
         loadingText.setTypeface(tf);
 
-        globalClass.enableFirebaseOfflineCapabilities();
-
         globalClass.getmDatabase().addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange (DataSnapshot dataSnapshot){

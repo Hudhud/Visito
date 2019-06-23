@@ -3,6 +3,7 @@ package dtu.app.visito;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.graphics.BitmapFactory;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -16,9 +17,10 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import java.io.InputStream;
+import java.net.URL;
 
 public class ShakeDetector {
-
 
     private Context mContext;
     private SensorManager sensorManager;
@@ -28,8 +30,6 @@ public class ShakeDetector {
     private FirebaseDatabase mFirebaseDatabase = FirebaseDatabase.getInstance();
     private DatabaseReference mDatabase = mFirebaseDatabase.getReference();
     private GlobalClass globalClass;
-
-
     private boolean attractionExists;
 
     public ShakeDetector(Context mContext, Activity act) {
@@ -175,7 +175,10 @@ public class ShakeDetector {
                                 Float.valueOf(attractionLongitude.getText().toString()) < -180 || Float.valueOf(attractionLongitude.getText().toString()) > 180) {
                             errorText.setVisibility(View.VISIBLE);
                             errorText.setText("Incorrect latitude and/or longitude");
+
                         } else {
+
+
 
                             Attraction attraction = new Attraction(attractionTitle.getText().toString().trim(),
                                     attractionDescription.getText().toString(), attractionImageURL.getText().toString().trim(),
@@ -189,13 +192,23 @@ public class ShakeDetector {
                             }
 
                             if (attractionExists == false) {
-                                mDatabase.child(attractionTitle.getText().toString().trim()).setValue(attraction).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                    @Override
-                                    public void onSuccess(Void aVoid) {
-                                        inputAlert.dismiss();
-                                        dialogCounter = 0;
-                                    }
-                                });
+
+                                try {
+                                    URL url = new URL(attractionImageURL.getText().toString().trim());
+                                    BitmapFactory.decodeStream((InputStream)url.getContent());
+
+                                    mDatabase.child(attractionTitle.getText().toString().trim()).setValue(attraction).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void aVoid) {
+                                            inputAlert.dismiss();
+                                            dialogCounter = 0;
+                                        }
+                                    });
+                                } catch (Exception e){
+                                    errorText.setVisibility(View.VISIBLE);
+                                    errorText.setText("Invalid image URL");
+                                }
+
                             } else {
                                 errorText.setVisibility(View.VISIBLE);
                                 errorText.setText("Attraction already exists");

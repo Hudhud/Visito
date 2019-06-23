@@ -1,17 +1,12 @@
 package dtu.app.visito;
 
 import android.app.Activity;
-import android.graphics.BitmapFactory;
-import android.os.StrictMode;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
 import java.util.ArrayList;
 
 public class CustomListAdapter extends ArrayAdapter<String> {
@@ -35,30 +30,18 @@ public class CustomListAdapter extends ArrayAdapter<String> {
         LayoutInflater inflater = context.getLayoutInflater();
         View rowView = inflater.inflate(R.layout.list_layout, null, true);
 
-        TextView txtTitle = (TextView) rowView.findViewById(R.id.tvAttractionTitle);
-        final ImageView imageView = (ImageView) rowView.findViewById(R.id.ivIcon);
+        TextView txtTitle = rowView.findViewById(R.id.tvAttractionTitle);
+        final ImageView imageView = rowView.findViewById(R.id.ivIcon);
 
         txtTitle.setText(lstAttractions.get(position));
 
-        loadImageFromURL(imageView, lstAttractionIcons.get(position));
+        globalClass.loadImageFromURL(imageView, lstAttractionIcons.get(position));
 
         if (position == lstAttractions.size() - 1) {
-            globalClass.showLoadingDialog();
+            globalClass.canShowLoadingDialog(false);
         }
 
 
         return rowView;
-    }
-
-    public void loadImageFromURL(ImageView iv, String imgURL) {
-        StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
-                .permitAll()
-                .build());
-        try {
-            URL url = new URL(imgURL);
-            iv.setImageBitmap(BitmapFactory.decodeStream((InputStream)url.getContent()));
-        } catch (IOException e) {
-           System.out.println(e.getMessage());
-        }
     }
 }
