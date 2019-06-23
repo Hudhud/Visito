@@ -44,18 +44,12 @@ public class MainActivity extends Activity {
                 globalClass.checkConnectivity("You cannot view the images of the attractions without" +
                         "an internet connection");
 
-                System.out.println("Boolean "+ globalClass.isShowLoading());
-
                     intent = new Intent(MainActivity.this, AttractionsList.class);
 
-                    if (globalClass.isShowLoading()) {
-                        pd.setMessage("Please wait...");
-                        pd.show();
-                    } else if (!globalClass.isShowLoading()) {
-                        pd.dismiss();
-                    }
+                     pd.setMessage("Please wait...");
+                     pd.show();
+
                 startActivity(intent);
-                System.out.println("Boolean "+ globalClass.isShowLoading());
 
             }
         });

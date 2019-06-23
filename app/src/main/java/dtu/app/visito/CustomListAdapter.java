@@ -37,11 +37,6 @@ public class CustomListAdapter extends ArrayAdapter<String> {
 
         globalClass.loadImageFromURL(imageView, lstAttractionIcons.get(position));
 
-        if (position == lstAttractions.size() - 1) {
-            globalClass.canShowLoadingDialog(false);
-        }
-
-
-        return rowView;
+            return rowView;
     }
 }

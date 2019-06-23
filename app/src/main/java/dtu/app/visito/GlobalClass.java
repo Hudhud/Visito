@@ -20,7 +20,6 @@ import java.util.ArrayList;
 public class GlobalClass extends Application {
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference mDatabase;
-    private boolean showLoading = true;
     private ArrayList<DataSnapshot> dsArrayList = new ArrayList<>();
     public ArrayList<DataSnapshot> getDsArrayList() {
         return dsArrayList;
@@ -45,14 +44,6 @@ public class GlobalClass extends Application {
         } else {
             return true;
         }
-    }
-
-    public void canShowLoadingDialog(boolean bool){
-        showLoading = bool;
-    }
-
-    public boolean isShowLoading() {
-        return showLoading;
     }
 
     public void loadImageFromURL(ImageView iv, String imgURL) {

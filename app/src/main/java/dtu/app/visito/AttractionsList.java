@@ -64,7 +64,6 @@ public class AttractionsList extends AppCompatActivity {
             return;
         }
 
-        globalClass.canShowLoadingDialog(true);
         Intent i = new Intent(AttractionsList.this, MainActivity.class);
         startActivity(i);
         finish();
