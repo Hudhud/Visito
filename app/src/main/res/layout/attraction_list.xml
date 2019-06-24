@@ -1,22 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+    android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:weightSum="100">
+    android:gravity="center_vertical">
 
-    <TextView
-        android:id="@+id/tvTopAttractions"
+    <Button
+        android:id="@+id/mapBTN"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Top Attractions"
-        android:textAlignment="center"
-        android:textSize="25sp" />
+        android:layout_gravity="center_horizontal"
+        android:backgroundTint="@color/colorPrimary"
+        android:text="Map"
+        android:layout_marginTop="10dp"
+        android:textColor="@android:color/white" />
 
     <ListView
+        android:id="@+id/lvAttractionsList"
         android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <LinearLayout
+        android:id="@+id/description_layout"
+        android:visibility="gone"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+       >
+
+        <ImageView
+            android:id="@+id/imageAttraction"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_gravity="center"
+            android:scaleType="fitXY"
+            />
+
+        <Button
+            android:id="@+id/direction"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="Get direction"
+            android:backgroundTint="@color/colorPrimary"
+            android:textColor="@android:color/white"
+            android:layout_gravity="center_horizontal"/>
+
+        <ScrollView
+            android:id="@+id/scrollView"
+            android:layout_width="match_parent"
+            android:layout_height="325dp">
+
+            <TextView
+                android:id="@+id/attractionDescription"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Description"
+                android:textAlignment="center"
+                android:textColor="@android:color/black"
+                android:textSize="25dp"
+                android:layout_weight="0.34" />
+
+        </ScrollView>
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/attraction_listview"
-        />
+        android:id="@+id/mapFragment"
+        android:layout_marginTop="5dp"
+        android:orientation="horizontal">
+    </LinearLayout>
 
 </LinearLayout>

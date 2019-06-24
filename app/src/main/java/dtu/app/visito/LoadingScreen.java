@@ -4,27 +4,24 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
+import android.os.Handler;
 import android.widget.TextView;
 
-import com.google.firebase.FirebaseApp;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import com.google.gson.Gson;
 
-public class LoadingScreen extends Activity {
+public class LoadingScreen extends Activity{
 
     private TextView title, slogan, loadingText;
+    private GlobalClass globalClass;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.loading_screen);
 
-        final GlobalData globalData = (GlobalData) getApplicationContext();
+        globalClass = (GlobalClass) getApplicationContext();
+
+        final boolean initialRun = getSharedPreferences("PREFERENCE", MODE_PRIVATE)
+                .getBoolean("initialRun", true);
 
         Typeface tf = Typeface.createFromAsset(getAssets(), "fonts/COMIC.TTF");
 
@@ -37,47 +34,29 @@ public class LoadingScreen extends Activity {
         loadingText = findViewById(R.id.loadingText);
         loadingText.setTypeface(tf);
 
-        globalData.enableFirebaseOfflineCapabilities();
+        if (initialRun) {
+            getSharedPreferences("PREFERENCE", MODE_PRIVATE).edit().
+                    putBoolean("initialRun", false).commit();
 
-        globalData.getmDatabase().addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange (DataSnapshot dataSnapshot){
-                for (DataSnapshot child: dataSnapshot.getChildren()) {
-                    globalData.getDsArrayList().add(child);
-                }
-                Intent i = new Intent(LoadingScreen.this, MainActivity.class);
-                startActivity(i);
-                finish();
-
-
+            if (!globalClass.checkConnectivity("You have to enable an internet connection on the initial run of the app")){
+                loadingText.setText("Please rerun the app");
+            } else{
+                startMainAct();
             }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-
-        /*
-        Thread welcomeThread = new Thread() {
-
-            @Override
-            public void run() {
-                try {
-                    super.run();
-                    sleep(10000);  //Delay of 10 seconds
-                    Intent i = new Intent(LoadingScreen.this, MainActivity.class);
-                    startActivity(i);
-                    finish();
-                } catch (Exception e) {
-                    System.out.println(e.getMessage());
-                }
-            }
-        };
-
-        welcomeThread.start();
-
-        */
+        } else{
+            startMainAct();
+        }
     }
 
+    private void startMainAct(){
+        final Intent i = new Intent(LoadingScreen.this, MainActivity.class);
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            public void run() {
+                startActivity(i);
+                finish();
+            }
+        }, 5000);
+
+    }
 }
