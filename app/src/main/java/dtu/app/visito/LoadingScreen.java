@@ -38,13 +38,14 @@ public class LoadingScreen extends Activity{
             getSharedPreferences("PREFERENCE", MODE_PRIVATE).edit().
                     putBoolean("initialRun", false).commit();
 
-            if (globalClass.checkConnectivity("You have to enable an internet connection on the initial run of the app")){
-
+            if (!globalClass.checkConnectivity("You have to enable an internet connection on the initial run of the app")){
+                loadingText.setText("Please rerun the app");
             } else{
                 startMainAct();
             }
+        } else{
+            startMainAct();
         }
-        startMainAct();
     }
 
     private void startMainAct(){

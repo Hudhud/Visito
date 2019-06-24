@@ -39,7 +39,7 @@ public class MainActivity extends Activity {
 
         topAttractionsBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                globalClass.checkConnectivity("You cannot view the images of the attractions without" +
+                globalClass.checkConnectivity("You cannot view new attractions without" +
                         "an internet connection");
 
                     intent = new Intent(MainActivity.this, AttractionsList.class);
@@ -55,8 +55,8 @@ public class MainActivity extends Activity {
         weatherBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
-                if (globalClass.checkConnectivity("You cannot view the weather without an internet" +
-                        "connectivity")) {
+                if (globalClass.checkConnectivity("You cannot view new attractions without" +
+                        "an internet connection")) {
                     intent = new Intent(MainActivity.this, Weather.class);
                     startActivity(intent);
                 }

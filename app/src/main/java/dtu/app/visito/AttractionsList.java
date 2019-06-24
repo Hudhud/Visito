@@ -103,7 +103,7 @@ public class AttractionsList extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view,
                                     final int position, long id) {
 
-                globalClass.checkConnectivity("You cannot view the images of the attractions without" +
+                globalClass.checkConnectivity("You cannot view new attractions without" +
                         "an internet connection");
 
                 mListView.setVisibility(View.GONE);
