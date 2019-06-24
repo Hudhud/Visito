@@ -68,7 +68,7 @@ public class MapFragment extends Fragment {
         locationProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());
 
         View rootView = inflater.inflate(R.layout.fragment_map, container, false);
-        mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.frg);  //use SuppoprtMapFragment for using in fragment instead of activity  MapFragment = activity   SupportMapFragment = fragment
+        mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.frg);  
         globalClass = (GlobalClass) getActivity().getApplicationContext();
 
 
