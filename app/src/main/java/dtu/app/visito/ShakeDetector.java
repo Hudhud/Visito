@@ -57,7 +57,7 @@ public class ShakeDetector {
             float delta = acelCurrentValue - acelLastValue;
             accelExGravity = accelExGravity * 0.9f + delta;
 
-            if (accelExGravity > 5) {
+            if (accelExGravity > 15) {
                 displayDialog();
                 canOpenLoginDialog = false;
             }
