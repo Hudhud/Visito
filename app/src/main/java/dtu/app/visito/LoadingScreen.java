@@ -44,7 +44,11 @@ public class LoadingScreen extends Activity{
                 startMainAct();
             }
         } else{
-            startMainAct();
+            if (!globalClass.checkConnectivity("You have to enable an internet connection")){
+                loadingText.setText("Please rerun the app");
+            } else{
+                startMainAct();
+            }
         }
     }
 
