@@ -44,7 +44,8 @@ public class LoadingScreen extends Activity{
                 startMainAct();
             }
         } else{
-            if (!globalClass.checkConnectivity("You have to enable an internet connection")){
+            if (!globalClass.checkConnectivity("You have to enable an internet connection")
+                    && globalClass.getDsArrayList().size() == 0){
                 loadingText.setText("Please rerun the app");
             } else{
                 startMainAct();
