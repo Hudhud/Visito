@@ -19,7 +19,6 @@ public class GlobalClass extends Application {
     private FirebaseDatabase firebaseDatabaseRef;
     private DatabaseReference databaseRef;
     private ArrayList<Attraction> dsArrayList = new ArrayList<>();
-    private boolean listIsReady;
 
     @Override
     public void onCreate() {

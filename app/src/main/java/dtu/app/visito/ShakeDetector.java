@@ -57,7 +57,7 @@ public class ShakeDetector {
             float delta = acelCurrentValue - acelLastValue;
             accelExGravity = accelExGravity * 0.9f + delta;
 
-            if (accelExGravity > 15) {
+            if (accelExGravity > 20) {
                 displayDialog();
                 canOpenLoginDialog = false;
             }
@@ -118,7 +118,7 @@ public class ShakeDetector {
                 @Override
                 public void onClick(View view) {
 
-                    if (passwordField.getText().toString().equals( "admin")){
+                    if (passwordField.getText().toString().equals("admin")){
 
                         loginAlert.dismiss();
                         inputAlert.show();
